@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
 import model.Record;
@@ -16,10 +17,11 @@ import model.Word;
 public class WordController {
 	String filePath;
 	String listname;
-	int allcount, recordplace;
+	int allcount, recordplace, lastto;
 	ArrayList<Word> wordlist;
 	ArrayList<Word> currentwordlist;
-	ArrayList<Record> recordlist;
+	HashMap<Integer,Integer> recordmap;
+	//ArrayList<Record> recordlist;
 	
 	RecordController recordController;
 
@@ -32,7 +34,13 @@ public class WordController {
 	}
 	
 	public void loadrecord(){
-		this.recordlist = recordController.openRecord();
+		this.recordmap=recordController.openRecord();
+		this.lastto=recordController.lastto;
+		//this.recordlist = recordController.openRecord();
+	}
+	
+	public int getLastto(){
+		return lastto;
 	}
 
 	// load words from file into a arraylist
@@ -66,6 +74,18 @@ public class WordController {
 		return this.wordlist.get(id);
 	}
 
+	public int getIDByWord(String word) {
+		Word tmp=null;
+		for(int i=0;i<wordlist.size();i++){
+			tmp=wordlist.get(i);
+			if(word.equals(tmp.getWord())){
+				return tmp.getID();
+			}
+		}
+		return -1;
+		//return this.wordlist.get(id);
+	}
+	
 	public int getAllCount() {
 		return this.wordlist.size();
 	}
@@ -92,6 +112,17 @@ public class WordController {
 		return true;
 	}
 	
+	public int isValid(int start, int num){
+		if (start <0 || num<0 || start>getAllCount()){
+			return -1;
+		}
+		else if ((start+num)>getAllCount()){
+			return getAllCount()-start;
+		}
+		else
+			return 0;
+	}
+	
 	//背完一个单词，在record的arraylist上加上这个单词的Record
 	public void startReciting(int startid, int duration){
 		currentwordlist = new ArrayList<Word>();
@@ -104,7 +135,7 @@ public class WordController {
 	public boolean finishReciting(int reciteTo){
 		//去掉还没背的单词
 		for (int i = reciteTo; i < currentwordlist.size();i++){
-			currentwordlist.remove(i);
+			currentwordlist.remove(i);//逻辑好像有问题，list一直在变
 		}
 		
 		recordController.saveRecord(this.currentwordlist, getListName());

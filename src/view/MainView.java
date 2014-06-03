@@ -42,6 +42,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	JMenuItem chooseItem = new JMenuItem("选择词库");
 	JMenuItem startwordItem = new JMenuItem("从头开始背！");
 	JMenuItem continueItem = new JMenuItem("从上次停止的地方继续！");
+	JMenuItem selectItem = new JMenuItem("自己选择从哪里开始背！");
 	JMenuItem listrecordItem = new JMenuItem("查看词库统计信息");
 	JMenuItem allrecordItem = new JMenuItem("查看历史背单词记录");
 	JMenuItem helpItem = new JMenuItem("帮助");
@@ -75,6 +76,11 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		continueItem.setMnemonic(KeyEvent.VK_D);
 		continueItem.addActionListener(this);
 		menu.add(continueItem);
+		
+		selectItem.setMnemonic(KeyEvent.VK_D);
+		selectItem.addActionListener(this);
+		menu.add(selectItem);
+		
 		/*
 		 * JMenuItem wordnumberItem = new JMenuItem("选择要背的单词个数");
 		 * wordnumberItem.setMnemonic(KeyEvent.VK_D);
@@ -105,6 +111,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		if (wordController == null) {
 			startwordItem.setEnabled(false);
 			continueItem.setEnabled(false);
+			selectItem.setEnabled(false);
 			listrecordItem.setEnabled(false);
 		}
 
@@ -115,14 +122,49 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == chooseItem) {
 			chooseFile();
-		} else if (e.getSource() == startwordItem) {
-			setStartWord();
+		} else if (e.getSource() == listrecordItem) {
+			// TODO
 		} else if (e.getSource() == allrecordItem) {
 			new RecordView();
+		} else if (e.getSource() == helpItem) {
+			// TODO
 		} else if (e.getSource() == AboutItem) {
 			JOptionPane.showMessageDialog(this,
 					"SE Lab4 \n Author: fengshao,chenlu,huijie", "About",
 					JOptionPane.DEFAULT_OPTION);
+		}
+		else{
+			int start=0;
+			if (e.getSource() == startwordItem) {
+				//setStartWord();
+				//int start=0;
+			} else if (e.getSource() == continueItem) {
+				// TODO
+				start=wordController.getLastto()+1;
+				if(start==wordController.getAllCount())
+					start=0;//上次背到最后，重新开始背
+			} else if (e.getSource() == selectItem) {
+				// TODO
+				start=selectWord();
+			}
+			int wordnum=setWordNum();
+			int valid=wordController.isValid(start, wordnum);
+			if (valid==-1) {
+				JOptionPane.showMessageDialog(this, "您的输入太坑爹，臣妾办不到啊。。。", "出错啦",
+						JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+			else if(valid==0){
+				JOptionPane.showMessageDialog(this, "选择成功", "成功",
+						JOptionPane.WARNING_MESSAGE);
+			}
+			else{
+				wordnum=valid;
+				JOptionPane.showMessageDialog(this, "您选择的单词量达到词库末尾，自动修正为："+valid+"个单词", "提示",
+						JOptionPane.WARNING_MESSAGE);
+			}
+			System.out.println("从第"+start+"个开始,背"+wordnum+"个");
+			recitationview(start, wordnum);
 		}
 	}
 
@@ -138,41 +180,38 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			chooseItem.setText("重新选择词库");
 			startwordItem.setEnabled(true);
 			continueItem.setEnabled(true);
+			selectItem.setEnabled(true);
 			listrecordItem.setEnabled(true);
 			// TODO
 		} else {
 			return;
 		}
 	}
-
-	//似乎这一段我理解错意思了，应该不用做从中间开始背这个功能，只用做重头开始和从上次停止处开始两个即可。代码还是有用的，留给你看看
-	public void setStartWord() {
-		String input1 = "0", input2 = "100";
-		if (wordController == null) {
-			JOptionPane.showMessageDialog(this, "请先选择词库！", "hahahaaaa",
-					JOptionPane.WARNING_MESSAGE);
-		} else {
-			int allcount = wordController.getAllCount();
-			input1 = JOptionPane.showInputDialog("（好像这个地方我理解错了，你看看代码注释）您想从第几个单词开始?现在总共" + allcount
-					+ "个单词，过大或者过小会报错的：");
-			input2 = JOptionPane.showInputDialog("您今天想背多少个单词?");
-			if (input1 == null || input2 == null) {
+	
+	//TODO 自动匹配和错误判断
+	public int selectWord(){
+		String input = JOptionPane.showInputDialog("您想从哪个单词开始背?");
+		return wordController.getIDByWord(input);
+	}
+	public int setWordNum(){
+		int num=0;
+		while(true){
+			String input = JOptionPane.showInputDialog("您今天想背多少个单词?");
+			if (input == null) {
 				JOptionPane.showMessageDialog(this, "您忘记输入了吧。。。", "出错啦",
 						JOptionPane.WARNING_MESSAGE);
-				return;
+				continue;
 			}
-			if (!wordController.isValid(input1, input2)) {
-				JOptionPane.showMessageDialog(this, "您的输入太坑爹，臣妾办不到啊。。。", "出错啦",
+			try{
+				num = Integer.parseInt(input);
+				break;
+			} catch(NumberFormatException e){
+				JOptionPane.showMessageDialog(this, "亲，请输入数字，不可过长（如几十亿。。。）", "出错啦",
 						JOptionPane.WARNING_MESSAGE);
-				return;
 			}
 		}
-		// 设置起止单词
-		int startint = Integer.parseInt(input1);
-		int duration = Integer.parseInt(input2);
-		recitationview(startint, duration);
+		return num;
 	}
-
 	// 背单词过程 ////////////////////// 这里是界面上的背单词过程
 	// controller控制实际上的背单词过程，实现包括保存记录等功能
 	public void recitationview(int startint, int duration) {
