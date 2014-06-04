@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -19,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JFrame;
+import javax.swing.JTextField;
 
 import model.Record;
 import model.Word;
@@ -35,7 +37,8 @@ import controller.WordController;
 public class MainView extends JFrame implements KeyListener, ActionListener {
 	JTextArea output;
 	JScrollPane scrollPane;
-
+	JPanel contentPane = new JPanel(new BorderLayout());
+	
 	String wordPath = "./wordlist/word.txt";
 	String recordPath = "./record/record.dat";
 
@@ -48,8 +51,16 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	JMenuItem helpItem = new JMenuItem("帮助");
 	JMenuItem AboutItem = new JMenuItem("Lab作者信息");
 
+	JTextField wordtofill=new JTextField(1);
+	JTextArea wordmeaning=new JTextArea();
+	JButton ok=new JButton("确认");
+	JButton skip=new JButton("跳过");
+	
 	WordController wordController = null;
-
+	int start;
+	int wordnum;
+	int currindex;
+	
 	public JMenuBar createMenuBar() {
 		JMenuBar menuBar;
 		JMenu menu, submenu;
@@ -132,9 +143,36 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			JOptionPane.showMessageDialog(this,
 					"SE Lab4 \n Author: fengshao,chenlu,huijie", "About",
 					JOptionPane.DEFAULT_OPTION);
+		} else if (e.getSource() == ok){
+			String input=wordtofill.getText();
+			Word currword=wordController.getWordByID(currindex);
+			if(currword.getWord().equals(input)){
+				//JOptionPane.showMessageDialog(this,
+						//"答对："+currword.getWord()+" "+currword.getMeaning(), "正确",
+						//JOptionPane.DEFAULT_OPTION);
+				wordController.addRecord(currindex, 1);
+				currindex++;
+				if(currindex>=start+wordnum)
+					//给出统计信息
+				else
+					wordmeaning.setText(wordController.getWordByID(currindex).getMeaning());
+			}
+			else{
+				JOptionPane.showMessageDialog(this,
+						"答错，应为："+currword.getWord()+" "+currword.getMeaning(), "错误",
+						JOptionPane.DEFAULT_OPTION);
+				wordController.addRecord(currindex, 0);
+				currindex++;
+				if(currindex>=start+wordnum)
+					//给出统计信息
+				else
+					wordmeaning.setText(wordController.getWordByID(currindex).getMeaning());
+			}
+		} else if (e.getSource() == skip){
+			
 		}
 		else{
-			int start=0;
+			start=0;
 			if (e.getSource() == startwordItem) {
 				//setStartWord();
 				//int start=0;
@@ -147,7 +185,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 				// TODO
 				start=selectWord();
 			}
-			int wordnum=setWordNum();
+			wordnum=setWordNum();
 			int valid=wordController.isValid(start, wordnum);
 			if (valid==-1) {
 				JOptionPane.showMessageDialog(this, "您的输入太坑爹，臣妾办不到啊。。。", "出错啦",
@@ -164,6 +202,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 						JOptionPane.WARNING_MESSAGE);
 			}
 			System.out.println("从第"+start+"个开始,背"+wordnum+"个");
+			currindex=start;
 			recitationview(start, wordnum);
 		}
 	}
@@ -215,11 +254,27 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	// 背单词过程 ////////////////////// 这里是界面上的背单词过程
 	// controller控制实际上的背单词过程，实现包括保存记录等功能
 	public void recitationview(int startint, int duration) {
-		wordController.startReciting(startint, duration);
+		//wordController.startReciting(startint, duration);
+		contentPane.removeAll();
+		contentPane.setLayout(new GridLayout(2,2));
+		
+		contentPane.add(wordtofill);
+		
+		contentPane.add(wordmeaning);
+		
+		ok.addActionListener(this);
+		contentPane.add(ok);
+		
+		//JButton skip=new JButton("跳过");
+		ok.addActionListener(this);
+		contentPane.add(skip);
+
+		//contentPane.removeAll();
+		contentPane.revalidate();
 		for (int tmp = startint; tmp < startint + duration; tmp++) {
 			Word word = wordController.getWordByID(tmp);
 			// TODO 绘制界面
-
+			wordmeaning.setText(word.getMeaning());
 		}
 	}
 
@@ -234,15 +289,16 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 
 	public Container createContentPane() {
 		// Create the content-pane-to-be.
-		JPanel contentPane = new JPanel(new BorderLayout());
+		//JPanel contentPane = new JPanel(new BorderLayout());
 		contentPane.setOpaque(true);
 
 		// Create a scrolled text area.
-		output = new JTextArea(5, 30);
+		output = new JTextArea(5, 5);
 		output.setEditable(false);
 		output.setText("此处为TextArea");
+		output.setBorder(javax.swing.border.LineBorder.createBlackLineBorder());
 		scrollPane = new JScrollPane(output);
-
+		//scrollPane.add();
 		// Add the text area to the content pane.
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 

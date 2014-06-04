@@ -20,6 +20,7 @@ public class WordController {
 	int allcount, recordplace, lastto;
 	ArrayList<Word> wordlist;
 	ArrayList<Word> currentwordlist;
+	HashMap<Integer,Integer> newrecordmap;
 	HashMap<Integer,Integer> recordmap;
 	//ArrayList<Record> recordlist;
 	
@@ -31,6 +32,7 @@ public class WordController {
 		this.recordController = new RecordController();
 		loadwordlist();
 		loadrecord();
+		newrecordmap=new HashMap<Integer,Integer>();
 	}
 	
 	public void loadrecord(){
@@ -129,6 +131,10 @@ public class WordController {
 		for (int i = startid; i < startid + duration; i++){
 			currentwordlist.add(wordlist.get(i));
 		}
+	}
+	
+	public void addRecord(int id, int pass){
+		newrecordmap.put(id, pass); 
 	}
 	
 	// 背到了第几个？进行保存
