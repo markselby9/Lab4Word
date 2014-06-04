@@ -41,7 +41,8 @@ public class RecordController {
 	public void saveRecord(ArrayList<Word> currentwordlist, String listname){
 		//TODO
 		System.out.println("Save record");
-		Record record = new Record();
+		
+		/*Record record = new Record();
 		record.setID(openRecord().size()+1);
 		record.setListname(listname);
 		record.setTime(saveTime());
@@ -57,7 +58,7 @@ public class RecordController {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	//此处应当是读出有很多Record的Arraylist	
@@ -113,13 +114,13 @@ public class RecordController {
 		*/
 	}
 	
-	public String saveTime(){
+	/*public String saveTime(){
 		Calendar cal = Calendar.getInstance();
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     	return sdf.format(cal.getTime());
-	}
+	}*/
 	
-	public Date parse(String strDate){
+	/*public Date parse(String strDate){
        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
        try {
 		return sdf.parse(strDate);
@@ -127,5 +128,5 @@ public class RecordController {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}	return null;
-   }
+   }*/
 }

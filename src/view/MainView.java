@@ -165,6 +165,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 					//给出统计信息
 					//contentPane.removeAll();
 					//contentPane.revalidate();
+					wordController.mergerecord();
 					new RecordView();
 				}
 				else
@@ -180,6 +181,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 					//给出统计信息
 					//contentPane.removeAll();
 					//contentPane.revalidate();
+					wordController.mergerecord();
 					new RecordView();
 				}
 				else
@@ -300,7 +302,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 
 	// 停止背单词，记录当前位置，进行保存
 	public void saveView(int reciteTo) {
-		if (wordController.finishReciting(reciteTo)) {
+		if (wordController.mergerecord()) {
 			System.out.println("保存成功！");
 		} else {
 			System.out.println("出错了！");

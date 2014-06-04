@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.regex.Pattern;
 
 import model.Record;
@@ -138,13 +139,26 @@ public class WordController {
 	}
 	
 	// 背到了第几个？进行保存
-	public boolean finishReciting(int reciteTo){
-		//去掉还没背的单词
-		for (int i = reciteTo; i < currentwordlist.size();i++){
-			currentwordlist.remove(i);//逻辑好像有问题，list一直在变
+	public boolean mergerecord(){
+		Iterator<Integer> ite=newrecordmap.keySet().iterator();
+		while(ite.hasNext()){
+			int tmp=ite.next();
+			lastto=tmp;
+			if(recordmap.containsKey(tmp)){
+				if(recordmap.get(tmp)==0&&newrecordmap.get(tmp)==1)
+					recordmap.put(tmp, 1);
+			}
+			else{
+				recordmap.put(tmp, newrecordmap.get(tmp));
+			}
 		}
+		newrecordmap.clear();
+		//去掉还没背的单词
+		//for (int i = reciteTo; i < currentwordlist.size();i++){
+			//currentwordlist.remove(i);//逻辑好像有问题，list一直在变
+		//}
 		
-		recordController.saveRecord(this.currentwordlist, getListName());
+		//recordController.saveRecord(this.currentwordlist, getListName());
 		return true;
 	}
 	
