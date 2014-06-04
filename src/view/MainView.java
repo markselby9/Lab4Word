@@ -47,14 +47,14 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	JMenuItem continueItem = new JMenuItem("从上次停止的地方继续！");
 	JMenuItem selectItem = new JMenuItem("自己选择从哪里开始背！");
 	JMenuItem listrecordItem = new JMenuItem("查看词库统计信息");
-	JMenuItem allrecordItem = new JMenuItem("查看历史背单词记录");
+	//JMenuItem allrecordItem = new JMenuItem("查看历史背单词记录");
 	JMenuItem helpItem = new JMenuItem("帮助");
 	JMenuItem AboutItem = new JMenuItem("Lab作者信息");
 
 	JTextField wordtofill=new JTextField(1);
 	JTextArea wordmeaning=new JTextArea();
 	JButton ok=new JButton("确认");
-	JButton skip=new JButton("跳过");
+	//JButton skip=new JButton("跳过");
 	
 	WordController wordController = null;
 	int start;
@@ -103,9 +103,9 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		listrecordItem.addActionListener(this);
 		menu.add(listrecordItem);
 
-		allrecordItem.setMnemonic(KeyEvent.VK_D);
-		allrecordItem.addActionListener(this);
-		menu.add(allrecordItem);
+		//allrecordItem.setMnemonic(KeyEvent.VK_D);
+		//allrecordItem.addActionListener(this);
+		//menu.add(allrecordItem);
 
 		// Build second menu in the menu bar.
 		menu = new JMenu("更多(M)");
@@ -135,15 +135,24 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			chooseFile();
 		} else if (e.getSource() == listrecordItem) {
 			// TODO
-		} else if (e.getSource() == allrecordItem) {
-			new RecordView();
-		} else if (e.getSource() == helpItem) {
+		} //else if (e.getSource() == allrecordItem) {
+			//new RecordView();}
+		else if (e.getSource() == helpItem) {
 			// TODO
 		} else if (e.getSource() == AboutItem) {
 			JOptionPane.showMessageDialog(this,
 					"SE Lab4 \n Author: fengshao,chenlu,huijie", "About",
 					JOptionPane.DEFAULT_OPTION);
 		} else if (e.getSource() == ok){
+			
+			if(currindex>=start+wordnum){
+				JOptionPane.showMessageDialog(this,
+						"您已经背完了选择的单词，如想继续背诵，请重新选择单词", "错误",
+						JOptionPane.DEFAULT_OPTION);
+				wordtofill.setText("");
+				wordmeaning.setText("");
+				return;
+			}
 			String input=wordtofill.getText();
 			Word currword=wordController.getWordByID(currindex);
 			if(currword.getWord().equals(input)){
@@ -152,8 +161,12 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 						//JOptionPane.DEFAULT_OPTION);
 				wordController.addRecord(currindex, 1);
 				currindex++;
-				if(currindex>=start+wordnum)
+				if(currindex>=start+wordnum){
 					//给出统计信息
+					//contentPane.removeAll();
+					//contentPane.revalidate();
+					new RecordView();
+				}
 				else
 					wordmeaning.setText(wordController.getWordByID(currindex).getMeaning());
 			}
@@ -163,14 +176,19 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 						JOptionPane.DEFAULT_OPTION);
 				wordController.addRecord(currindex, 0);
 				currindex++;
-				if(currindex>=start+wordnum)
+				if(currindex>=start+wordnum){
 					//给出统计信息
+					//contentPane.removeAll();
+					//contentPane.revalidate();
+					new RecordView();
+				}
 				else
 					wordmeaning.setText(wordController.getWordByID(currindex).getMeaning());
 			}
-		} else if (e.getSource() == skip){
+			wordtofill.setText("");
+		} //else if (e.getSource() == skip){
 			
-		}
+		//}
 		else{
 			start=0;
 			if (e.getSource() == startwordItem) {
@@ -262,20 +280,22 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		
 		contentPane.add(wordmeaning);
 		
+		ok.removeActionListener(this);
 		ok.addActionListener(this);
 		contentPane.add(ok);
 		
 		//JButton skip=new JButton("跳过");
-		ok.addActionListener(this);
-		contentPane.add(skip);
+		//skip.addActionListener(this);
+		//contentPane.add(skip);
 
 		//contentPane.removeAll();
 		contentPane.revalidate();
-		for (int tmp = startint; tmp < startint + duration; tmp++) {
-			Word word = wordController.getWordByID(tmp);
+		//for (int tmp = startint; tmp < startint + duration; tmp++) {
+		currindex=startint;
+			Word word = wordController.getWordByID(currindex);
 			// TODO 绘制界面
 			wordmeaning.setText(word.getMeaning());
-		}
+		//}
 	}
 
 	// 停止背单词，记录当前位置，进行保存
@@ -354,6 +374,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		// Display the window.
 		frame.setSize(height, width);
 		frame.setVisible(true);
+		
 	}
 
 	@Override
