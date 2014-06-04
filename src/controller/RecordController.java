@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import model.Record;
 import model.Word;
@@ -38,10 +41,34 @@ public class RecordController {
 	}
 	
 	//根据已背单词的Arraylist进行保存，在文件里添加一个Record
-	public void saveRecord(ArrayList<Word> currentwordlist, String listname){
+	public boolean saveRecord(HashMap<Integer,Integer> recordmap, int lastto){
 		//TODO
 		System.out.println("Save record");
-		
+		OutputStreamWriter osr = null;
+		try {
+			osr = new OutputStreamWriter(new FileOutputStream(recordfilepathString), "gb2312");
+		} catch (UnsupportedEncodingException | FileNotFoundException e1) {
+			e1.printStackTrace();
+			return false;
+		}
+		BufferedWriter bwr = new BufferedWriter(osr);
+		try {
+			bwr.write("last_to:"+lastto);
+			Iterator<Integer> ite=recordmap.keySet().iterator();
+			while(ite.hasNext()){
+				int tmp=ite.next();
+				bwr.newLine();
+				bwr.write(tmp+" "+recordmap.get(tmp));
+			}
+			bwr.flush();
+			bwr.close();
+			osr.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 		/*Record record = new Record();
 		record.setID(openRecord().size()+1);
 		record.setListname(listname);
@@ -77,15 +104,17 @@ public class RecordController {
 		try {
 			line = br.readLine();
 			while (line != null) {
+				System.out.println(line);
 				if(line.startsWith("last_to:")){
 					this.lastto=Integer.parseInt(line.substring(8));
 				}
 				else{
 					String[] arr = line.split(" ");
 					//Word word = new Word(id, arr[0], arr[arr.length - 1]);
-					recordmap.put(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]));
-					line = br.readLine();
+					if(!arr[0].equals(""))
+						recordmap.put(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]));
 				}
+				line = br.readLine();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -22,9 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
-import model.Record;
 import model.Word;
-import controller.RecordController;
 import controller.WordController;
 
 /* MenuLookDemo.java requires images/middle.gif. */
@@ -56,7 +54,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	JButton ok=new JButton("确认");
 	//JButton skip=new JButton("跳过");
 	
-	WordController wordController = null;
+	static WordController wordController = null;
 	int start;
 	int wordnum;
 	int currindex;
@@ -250,8 +248,16 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	//TODO 自动匹配和错误判断
 	public int selectWord(){
 		String input = JOptionPane.showInputDialog("您想从哪个单词开始背?");
-		return wordController.getIDByWord(input);
+		int tmp=wordController.getIDByWord(input);
+		if(tmp==-1){
+			JOptionPane.showMessageDialog(this, "词库中没有您输入的单词，将默认从第一个单词开始", "出错啦",
+					JOptionPane.WARNING_MESSAGE);
+			return 0;
+		}
+		else
+			return tmp;
 	}
+	
 	public int setWordNum(){
 		int num=0;
 		while(true){
@@ -301,9 +307,9 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	}
 
 	// 停止背单词，记录当前位置，进行保存
-	public void saveView(int reciteTo) {
-		if (wordController.mergerecord()) {
-			System.out.println("保存成功！");
+	public static void saveView() {
+		if (wordController.mergerecord()&&wordController.saveRecord()){
+				System.out.println("保存成功！");
 		} else {
 			System.out.println("出错了！");
 		}
@@ -354,6 +360,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 						"确定要退出系统吗？退出的时候要做一个保存当前记录，不过我现在还没做", "退出系统",
 						JOptionPane.YES_NO_OPTION);
 				if (i == JOptionPane.YES_OPTION) {
+					saveView();
 					System.exit(0);
 				}
 			}

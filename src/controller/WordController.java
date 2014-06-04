@@ -10,6 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import model.Record;
@@ -153,13 +154,11 @@ public class WordController {
 			}
 		}
 		newrecordmap.clear();
-		//去掉还没背的单词
-		//for (int i = reciteTo; i < currentwordlist.size();i++){
-			//currentwordlist.remove(i);//逻辑好像有问题，list一直在变
-		//}
-		
-		//recordController.saveRecord(this.currentwordlist, getListName());
 		return true;
+	}
+	
+	public boolean saveRecord(){
+		return recordController.saveRecord(recordmap,lastto);
 	}
 	
 	public static boolean isInteger(String str) {
