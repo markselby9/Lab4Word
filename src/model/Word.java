@@ -2,7 +2,11 @@ package model;
 
 // 单词类
 public class Word {
+	
 	int ID;
+	String word;
+	String meaning;
+	
 	public int getID() {
 		return ID;
 	}
@@ -11,8 +15,6 @@ public class Word {
 		ID = iD;
 	}
 
-	String word;
-	String meaning;
 	
 	public String getWord() {
 		return word;
