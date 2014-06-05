@@ -55,7 +55,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
     // Variables declaration - do not modify
     private javax.swing.JTextField Chi=new JTextField();
     private javax.swing.JLabel ChiLabel=new JLabel();
-    private javax.swing.JTextField CorrectEng=new JTextField();
     private javax.swing.JTextField Eng=new JTextField();
     private javax.swing.JLabel EngLabel=new JLabel();;
     private javax.swing.JButton NOTOK=new JButton();
@@ -152,7 +151,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			JOptionPane.showMessageDialog(this,
 					"SE Lab4 \n Author: fengshao,chenlu,huijie", "About",
 					JOptionPane.DEFAULT_OPTION);
-		} else if (e.getSource() == OK){
+		} else if (e.getSource() == OK || e.getSource() == NOTOK){
 			if(currindex>=start+wordnum){
 				JOptionPane.showMessageDialog(this,
 						"您已经背完了选择的单词，如想继续背诵，请重新选择单词", "错误",
@@ -161,15 +160,24 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 				Chi.setText("");
 				return;
 			}
-			String input=Eng.getText();
 			Word currword=wordController.getWordByID(currindex);
-			if(currword.getWord().equals(input)){
-				wordController.addRecord(currindex, 1);
-				rightnum++;
+			if (e.getSource() == OK){
+				String input=Eng.getText();
+				if(currword.getWord().equals(input)){
+					wordController.addRecord(currindex, 1);
+					rightnum++;
+				}
+				else{
+					JOptionPane.showMessageDialog(this,
+							"答错，应为："+currword.getWord()+" "+currword.getMeaning(), "错误",
+							JOptionPane.DEFAULT_OPTION);
+					wordController.addRecord(currindex, 0);
+					wrongnum++;
+				}
 			}
 			else{
 				JOptionPane.showMessageDialog(this,
-						"答错，应为："+currword.getWord()+" "+currword.getMeaning(), "错误",
+						"答案是："+currword.getWord()+" "+currword.getMeaning(), "提醒",
 						JOptionPane.DEFAULT_OPTION);
 				wordController.addRecord(currindex, 0);
 				wrongnum++;
@@ -183,8 +191,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			else
 				Chi.setText(wordController.getWordByID(currindex).getMeaning());
 			Eng.setText("");
-		} else if(e.getSource() == NOTOK){
-			//TODO
 		} else if(e.getSource() == selectworddone){
 			int tmp=wordController.getIDByWord(inputfield.getText());
 			if(tmp==-1){
@@ -299,27 +305,22 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		//wordController.startReciting(startint, duration);
 		contentPane.removeAll();
 		/*contentPane.setLayout(new GridLayout(2,2));
-		
 		contentPane.add(wordtofill);
-		
 		contentPane.add(wordmeaning);
-		
 		ok.removeActionListener(this);
 		ok.addActionListener(this);
 		contentPane.add(ok);
-		
 		//contentPane.removeAll();
 		contentPane.revalidate();
 		*/
 
         Chi.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         Chi.setText("中文释义");
-        //Chi.addActionListener(this);
+        Chi.setEditable(false);
 
         Eng.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         Eng.setText("单词输入");
-        //Eng.addActionListener(this);
-
+  
         OK.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         OK.setText("我非常确定^-^");
         OK.setActionCommand("d");
@@ -337,10 +338,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         EngLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         EngLabel.setText("单词输入");
 
-        CorrectEng.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
-        CorrectEng.setText("正确释义");
-        //CorrectEng.addActionListener(this);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(contentPane);
         contentPane.setLayout(layout);
         layout.setHorizontalGroup(
@@ -348,7 +345,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(64, 64, 64)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(CorrectEng, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
                     .addComponent(EngLabel, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ChiLabel, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Eng, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
@@ -376,15 +372,11 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(NOTOK)
                     .addComponent(OK))
-                .addGap(18, 18, 18)
-                .addComponent(CorrectEng, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32))
+                .addGap(18, 18, 18))
         );
 		//for (int tmp = startint; tmp < startint + duration; tmp++) {
 		currindex=startint;
 		Word word = wordController.getWordByID(currindex);
-		// TODO 绘制界面
-		
 		Chi.setText(word.getMeaning());
 		//}
 	}
