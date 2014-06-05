@@ -147,7 +147,6 @@ public class WordView extends javax.swing.JPanel {
         // TODO add your handling code here:
     }
 
-
     // Variables declaration - do not modify
     private javax.swing.JTextField Chi;
     private javax.swing.JLabel ChiLabel;

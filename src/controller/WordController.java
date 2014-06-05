@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -90,8 +91,36 @@ public class WordController {
 		//return this.wordlist.get(id);
 	}
 	
+	public ArrayList<String> getSimilarWords(String word){
+		ArrayList<String> words=new ArrayList<String>();
+		String tmp="";
+		for(int i=0;i<wordlist.size();i++){
+			tmp=wordlist.get(i).getWord();
+			if(tmp.startsWith(word)){
+				words.add(tmp);
+			}
+			if(words.size()>=10)
+				return words;
+		}
+		return words;
+	}
+	
 	public int getAllCount() {
 		return this.wordlist.size();
+	}
+	
+	public int getRecordCount(){
+		return recordmap.size();
+	}
+	
+	public int getRecordRightCount(){
+		Collection <Integer> values=recordmap.values();
+		Integer [] arr=values.toArray(new Integer [0]);
+		int result=0;
+		for(int i=0;i<arr.length;i++){
+			result+=arr[i].intValue();
+		}
+		return result;
 	}
 
 	public String getListName(){
@@ -126,14 +155,6 @@ public class WordController {
 		else
 			return 0;
 	}
-	
-	//背完一个单词，在record的arraylist上加上这个单词的Record
-	/*public void startReciting(int startid, int duration){
-		currentwordlist = new ArrayList<Word>();
-		for (int i = startid; i < startid + duration; i++){
-			currentwordlist.add(wordlist.get(i));
-		}
-	}*/
 	
 	public void addRecord(int id, int pass){
 		newrecordmap.put(id, pass); 
