@@ -57,6 +57,8 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	static WordController wordController = null;
 	int start;
 	int wordnum;
+	int rightnum;
+	int wrongnum;
 	int currindex;
 	
 	public JMenuBar createMenuBar() {
@@ -158,13 +160,14 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 						//"答对："+currword.getWord()+" "+currword.getMeaning(), "正确",
 						//JOptionPane.DEFAULT_OPTION);
 				wordController.addRecord(currindex, 1);
+				rightnum++;
 				currindex++;
 				if(currindex>=start+wordnum){
 					//给出统计信息
 					//contentPane.removeAll();
 					//contentPane.revalidate();
 					wordController.mergerecord();
-					new RecordView();
+					new RecordView(wordController.getListName(),wordnum,rightnum,wrongnum);
 				}
 				else
 					wordmeaning.setText(wordController.getWordByID(currindex).getMeaning());
@@ -175,12 +178,13 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 						JOptionPane.DEFAULT_OPTION);
 				wordController.addRecord(currindex, 0);
 				currindex++;
+				wrongnum++;
 				if(currindex>=start+wordnum){
 					//给出统计信息
 					//contentPane.removeAll();
 					//contentPane.revalidate();
 					wordController.mergerecord();
-					new RecordView();
+					new RecordView(wordController.getListName(),wordnum,rightnum,wrongnum);
 				}
 				else
 					wordmeaning.setText(wordController.getWordByID(currindex).getMeaning());
@@ -191,6 +195,9 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		//}
 		else{
 			start=0;
+			wordnum=0;
+			rightnum=0;
+			wrongnum=0;
 			if (e.getSource() == startwordItem) {
 				//setStartWord();
 				//int start=0;
@@ -324,7 +331,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		output = new JTextArea(5, 5);
 		output.setEditable(false);
 		output.setText("此处为TextArea");
-		output.setBorder(javax.swing.border.LineBorder.createBlackLineBorder());
+		//output.setBorder(javax.swing.border.LineBorder.createBlackLineBorder());
 		scrollPane = new JScrollPane(output);
 		//scrollPane.add();
 		// Add the text area to the content pane.

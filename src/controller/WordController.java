@@ -21,7 +21,7 @@ public class WordController {
 	String listname;
 	int allcount, recordplace, lastto;
 	ArrayList<Word> wordlist;
-	ArrayList<Word> currentwordlist;
+	//ArrayList<Word> currentwordlist;
 	HashMap<Integer,Integer> newrecordmap;
 	HashMap<Integer,Integer> recordmap;
 	//ArrayList<Record> recordlist;
@@ -95,7 +95,7 @@ public class WordController {
 	}
 
 	public String getListName(){
-		String[] arr = this.filePath.split("/");
+		String[] arr = this.filePath.split("\\\\");
 		return arr[arr.length-1];
 	}
 	
@@ -128,12 +128,12 @@ public class WordController {
 	}
 	
 	//背完一个单词，在record的arraylist上加上这个单词的Record
-	public void startReciting(int startid, int duration){
+	/*public void startReciting(int startid, int duration){
 		currentwordlist = new ArrayList<Word>();
 		for (int i = startid; i < startid + duration; i++){
 			currentwordlist.add(wordlist.get(i));
 		}
-	}
+	}*/
 	
 	public void addRecord(int id, int pass){
 		newrecordmap.put(id, pass); 
@@ -141,10 +141,13 @@ public class WordController {
 	
 	// 背到了第几个？进行保存
 	public boolean mergerecord(){
-		Iterator<Integer> ite=newrecordmap.keySet().iterator();
+		Set<Integer> keys=newrecordmap.keySet();
+		Iterator<Integer> ite=keys.iterator();
+		if(keys.size()>0)
+			lastto=0;
 		while(ite.hasNext()){
 			int tmp=ite.next();
-			lastto=tmp;
+			lastto=Math.max(lastto, tmp);
 			if(recordmap.containsKey(tmp)){
 				if(recordmap.get(tmp)==0&&newrecordmap.get(tmp)==1)
 					recordmap.put(tmp, 1);
