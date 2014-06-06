@@ -598,7 +598,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				int i = JOptionPane.showConfirmDialog(null,
-						"确定要退出系统吗？退出的时候要做一个保存当前记录，不过我现在还没做", "退出系统",
+						"确定要退出系统吗？", "退出",
 						JOptionPane.YES_NO_OPTION);
 				if (i == JOptionPane.YES_OPTION) {
 					saveView();
