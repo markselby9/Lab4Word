@@ -37,7 +37,6 @@ public class WordView extends javax.swing.JPanel {
         NOTOK = new javax.swing.JButton();
         ChiLabel = new javax.swing.JLabel();
         EngLabel = new javax.swing.JLabel();
-        CorrectEng = new javax.swing.JTextField();
 
         Chi.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         Chi.setText("中文释义");
@@ -78,14 +77,6 @@ public class WordView extends javax.swing.JPanel {
         EngLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         EngLabel.setText("单词输入");
 
-        CorrectEng.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
-        CorrectEng.setText("正确释义");
-        CorrectEng.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CorrectEngActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -93,7 +84,6 @@ public class WordView extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(64, 64, 64)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(CorrectEng, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
                     .addComponent(EngLabel, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ChiLabel, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Eng, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
@@ -121,10 +111,7 @@ public class WordView extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(NOTOK)
                     .addComponent(OK))
-                .addGap(18, 18, 18)
-                .addComponent(CorrectEng, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32))
-        );
+                .addGap(18, 18, 18)));
     }// </editor-fold>
 
     private void ChiActionPerformed(java.awt.event.ActionEvent evt) {
@@ -150,7 +137,6 @@ public class WordView extends javax.swing.JPanel {
     // Variables declaration - do not modify
     private javax.swing.JTextField Chi;
     private javax.swing.JLabel ChiLabel;
-    private javax.swing.JTextField CorrectEng;
     private javax.swing.JTextField Eng;
     private javax.swing.JLabel EngLabel;
     private javax.swing.JButton NOTOK;
