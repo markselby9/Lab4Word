@@ -8,6 +8,10 @@ public class Lexicon {
 	int alreadyNum;
 	int totalNum;
 	
+	public Lexicon(String lexiconName, String URL, int wrongNum, int alreadyNum, int totalNum){
+		this.lexiconName = lexiconName;
+	}
+	
 	public String getLexiconName() {
 		return lexiconName;
 	}

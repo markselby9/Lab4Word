@@ -37,9 +37,9 @@ public class WordView extends javax.swing.JPanel {
         NOTOK = new javax.swing.JButton();
         ChiLabel = new javax.swing.JLabel();
         EngLabel = new javax.swing.JLabel();
-        CorrectEng = new javax.swing.JTextField();
+        ReturnButton = new javax.swing.JButton();
 
-        Chi.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
+        Chi.setFont(new java.awt.Font("微软雅黑", 0, 12));
         Chi.setText("中文释义");
         Chi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -47,7 +47,7 @@ public class WordView extends javax.swing.JPanel {
             }
         });
 
-        Eng.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
+        Eng.setFont(new java.awt.Font("微软雅黑", 0, 12));
         Eng.setText("单词输入");
         Eng.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -72,19 +72,13 @@ public class WordView extends javax.swing.JPanel {
             }
         });
 
-        ChiLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
+        ChiLabel.setFont(new java.awt.Font("微软雅黑", 0, 12));
         ChiLabel.setText("中文释义");
 
-        EngLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
+        EngLabel.setFont(new java.awt.Font("微软雅黑", 0, 12));
         EngLabel.setText("单词输入");
 
-        CorrectEng.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
-        CorrectEng.setText("正确释义");
-        CorrectEng.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CorrectEngActionPerformed(evt);
-            }
-        });
+        ReturnButton.setText("返回主界面");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -93,17 +87,20 @@ public class WordView extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(64, 64, 64)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(CorrectEng, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
                     .addComponent(EngLabel, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ChiLabel, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Eng, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
                     .addComponent(Chi, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(OK)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                        .addComponent(NOTOK)
-                        .addGap(12, 12, 12)))
+                        .addComponent(OK, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(ReturnButton, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(NOTOK, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(50, 50, 50))
         );
         layout.setVerticalGroup(
@@ -121,11 +118,11 @@ public class WordView extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(NOTOK)
                     .addComponent(OK))
-                .addGap(18, 18, 18)
-                .addComponent(CorrectEng, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32))
+                .addGap(52, 52, 52)
+                .addComponent(ReturnButton)
+                .addContainerGap())
         );
-    }// </editor-fold>
+    }
 
     private void ChiActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
@@ -155,6 +152,7 @@ public class WordView extends javax.swing.JPanel {
     private javax.swing.JLabel EngLabel;
     private javax.swing.JButton NOTOK;
     private javax.swing.JButton OK;
+    private javax.swing.JButton ReturnButton;
     // End of variables declaration
 
 }
