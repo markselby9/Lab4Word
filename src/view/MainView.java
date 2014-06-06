@@ -43,24 +43,25 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	String wordPath = "./wordlist/word.txt";
 	String recordPath = "./record/record.dat";
 
-	JMenuItem chooseItem = new JMenuItem("选择词库");
-	JMenuItem startwordItem = new JMenuItem("从头开始背！");
-	JMenuItem continueItem = new JMenuItem("从上次停止的地方继续！");
-	JMenuItem selectItem = new JMenuItem("自己选择从哪里开始背！");
+	//JMenuItem chooseItem = new JMenuItem("选择词库");
+	//JMenuItem startwordItem = new JMenuItem("从头开始背！");
+	//JMenuItem continueItem = new JMenuItem("从上次停止的地方继续！");
+	//JMenuItem selectItem = new JMenuItem("自己选择从哪里开始背！");
 	JMenuItem recordItem = new JMenuItem("查看词库统计信息");
 	//JMenuItem allrecordItem = new JMenuItem("查看历史背单词记录");
 	JMenuItem helpItem = new JMenuItem("帮助");
 	JMenuItem AboutItem = new JMenuItem("Lab作者信息");
 
-	//
-    private JButton begin=new JButton();
-    private JLabel jLabel1=new JLabel();
-    private JLabel jLabel2=new JLabel();
-    private JPanel jPanel2=new JPanel();
-    private JPanel logo=new JPanel();
-    private JTextField selfDefine=new JTextField();
-    private JComboBox type=new JComboBox();
-    private JComboBox wordlist=new JComboBox();
+	//mainview2
+    private javax.swing.JButton FileChooser=new JButton();
+    private javax.swing.JTextField Number=new JTextField();
+    private javax.swing.JButton begin=new JButton();
+    private javax.swing.JLabel jLabel1=new JLabel();
+    private javax.swing.JLabel jLabel2=new JLabel();
+    private javax.swing.JLabel jLabel3=new JLabel();
+    private javax.swing.JPanel jPanel2=new JPanel();
+    private javax.swing.JPanel logo=new JPanel();
+    private javax.swing.JComboBox type=new JComboBox();
 	//
 	
     // Variables declaration - do not modify
@@ -100,10 +101,10 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 
 		// 开始菜单项
 		// ImageIcon icon = createImageIcon("/images/start.jpg");
-		chooseItem.setMnemonic(KeyEvent.VK_D);
-		chooseItem.addActionListener(this);
-		menu.add(chooseItem);
-
+		//chooseItem.setMnemonic(KeyEvent.VK_D);
+		//chooseItem.addActionListener(this);
+		//menu.add(chooseItem);
+		/*
 		startwordItem.setMnemonic(KeyEvent.VK_D);
 		startwordItem.addActionListener(this);
 		menu.add(startwordItem);
@@ -117,11 +118,11 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		menu.add(selectItem);
 		
 		menu.addSeparator();
-
+		*/
 		recordItem.setMnemonic(KeyEvent.VK_D);
 		recordItem.addActionListener(this);
 		menu.add(recordItem);
-
+		
 		// Build second menu in the menu bar.
 		menu = new JMenu("更多(M)");
 		menu.setMnemonic('M');
@@ -134,19 +135,38 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		AboutItem.addActionListener(this);
 		menu.add(AboutItem);
 
+		/*
 		if (wordController == null) {
 			startwordItem.setEnabled(false);
 			continueItem.setEnabled(false);
 			selectItem.setEnabled(false);
 			recordItem.setEnabled(false);
-		}
+		}*/
 
 		return menuBar;
 	}
-
+	
+	public void addlistener(){
+		inputfield.addKeyListener(this);
+		selectworddone.addActionListener(this);
+        OK.addActionListener(this);
+        NOTOK.addActionListener(this);
+        ReturnButton.addActionListener(this);
+        FileChooser.addActionListener(this);
+        begin.addActionListener(this);
+        type.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                int index = type.getSelectedIndex();
+                if (index == 2) { // ==0表示选中的是第一个
+                	selectWord();
+                }
+              }
+        });
+	}
+	
 	// TODO 每个按键对应的动作
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == chooseItem) {
+		if (e.getSource() == FileChooser) {
 			chooseFile();
 		} else if (e.getSource() == recordItem) {
 			// TODO
@@ -159,6 +179,41 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			JOptionPane.showMessageDialog(this,
 					"SE Lab4 \n Author: fengshao,chenlu,huijie", "About",
 					JOptionPane.DEFAULT_OPTION);
+		} else if(e.getSource() == begin){
+			//start=0;
+			wordnum=0;
+			rightnum=0;
+			wrongnum=0;
+			int index=type.getSelectedIndex();
+			if(index == 0){
+				start=0;
+			} else if (index == 1) {
+				start=wordController.getLastto()+1;
+				if(start==wordController.getAllCount())
+					start=0;//上次背到最后，重新开始背
+				//afterselectword();
+			} //else if (index == 2) {//自己选从哪里背
+				// TODO
+				//selectWord();
+			//}
+			String input = Number.getText();
+			if (input.equals("")) {
+				JOptionPane.showMessageDialog(this, "您忘记背诵单词数了吧。。。", "出错啦",
+						JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+			else{
+				int num=0;
+				try{
+					num = Integer.parseInt(input);
+				} catch(NumberFormatException ex){
+					JOptionPane.showMessageDialog(this, "亲，请输入数字，不可过长（如几十亿。。。）", "出错啦",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				wordnum=num;
+				afterselectword();
+			}
 		} else if (e.getSource() == OK || e.getSource() == NOTOK){
 			if(currindex>=start+wordnum){
 				JOptionPane.showMessageDialog(this,
@@ -200,7 +255,8 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 				Chi.setText(wordController.getWordByID(currindex).getMeaning());
 			Eng.setText("");
 		} else if(e.getSource() == ReturnButton){
-			
+			contentPane.removeAll();
+			createContentPane();
 		} else if(e.getSource() == selectworddone){
 			int tmp=wordController.getIDByWord(inputfield.getText());
 			if(tmp==-1){
@@ -211,8 +267,8 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			else
 				start=tmp;
 			selectwordframe.dispose();
-			afterselectword();
-		} else{
+			//afterselectword();
+		} /*else{
 			start=0;
 			wordnum=0;
 			rightnum=0;
@@ -229,7 +285,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 				// TODO
 				selectWord();
 			}
-		}
+		}*/
 	}
 
 	public void chooseFile() {
@@ -241,10 +297,13 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 			wordPath = chooser.getSelectedFile().getPath();
 			wordController = new WordController(wordPath);
-			chooseItem.setText("重新选择词库");
-			startwordItem.setEnabled(true);
-			continueItem.setEnabled(true);
-			selectItem.setEnabled(true);
+			FileChooser.setText("重新选择词库");
+			begin.setEnabled(true);
+			type.setEnabled(true);
+			Number.setEnabled(true);
+			//startwordItem.setEnabled(true);
+			//continueItem.setEnabled(true);
+			//selectItem.setEnabled(true);
 			recordItem.setEnabled(true);
 			// TODO
 		} else {
@@ -256,10 +315,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	public void selectWord(){
 		cmb.setEditable(true);
 		   	//cmb.setPopupVisible(true);
-		inputfield.removeKeyListener(this);
-		inputfield.addKeyListener(this);
-		selectworddone.removeKeyListener(this);
-		selectworddone.addActionListener(this);
 		selectwordframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		selectwordframe.getContentPane().setLayout(new GridLayout(1,2));
 		selectwordframe.getContentPane().add(cmb);
@@ -268,6 +323,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		selectwordframe.setVisible(true);
 	}
 	
+	/*
 	public int setWordNum(){
 		int num=0;
 		while(true){
@@ -286,21 +342,16 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			}
 		}
 		return num;
-	}
+	}*/
 	
 	public void afterselectword(){
-		wordnum=setWordNum();
 		int valid=wordController.isValid(start, wordnum);
 		if (valid==-1) {
-			JOptionPane.showMessageDialog(this, "您的输入太坑爹，臣妾办不到啊。。。", "出错啦",
+			JOptionPane.showMessageDialog(this, "您输入的单词数太坑爹，臣妾办不到啊。。。", "出错啦",
 					JOptionPane.WARNING_MESSAGE);
 			return;
 		}
-		else if(valid==0){
-			JOptionPane.showMessageDialog(this, "选择成功", "成功",
-					JOptionPane.WARNING_MESSAGE);
-		}
-		else{
+		else if(valid>0){
 			wordnum=valid;
 			JOptionPane.showMessageDialog(this, "您选择的单词量达到词库末尾，自动修正为："+valid+"个单词", "提示",
 					JOptionPane.WARNING_MESSAGE);
@@ -309,6 +360,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		currindex=start;
 		recitationview(start, wordnum);
 	}
+	
 	// 背单词过程 ////////////////////// 这里是界面上的背单词过程
 	// controller控制实际上的背单词过程，实现包括保存记录等功能
 	public void recitationview(int startint, int duration) {
@@ -329,18 +381,14 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         Chi.setEditable(false);
 
         Eng.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
-        Eng.setText("单词输入");
+        //Eng.setText("单词输入");
   
         OK.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         OK.setText("我非常确定^-^");
         OK.setActionCommand("d");
-        OK.removeActionListener(this);
-        OK.addActionListener(this);
 
         NOTOK.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         NOTOK.setText("我不记得了T-T");
-        NOTOK.removeActionListener(this);
-        NOTOK.addActionListener(this);
 
         ChiLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         ChiLabel.setText("中文释义");
@@ -349,8 +397,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         EngLabel.setText("单词输入");
         
         ReturnButton.setText("返回主界面");
-        ReturnButton.removeActionListener(this);
-        ReturnButton.addActionListener(this);
         
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(contentPane);
         contentPane.setLayout(layout);
@@ -403,6 +449,8 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 
 	// 停止背单词，记录当前位置，进行保存
 	public static void saveView() {
+		if(wordController==null)
+			return;
 		if (wordController.mergerecord()&&wordController.saveRecord()){
 				System.out.println("保存成功！");
 		} else {
@@ -410,11 +458,21 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		}
 	}
 
-	public Container createContentPane() {
+	public void createContentPane() {
 		// Create the content-pane-to-be.
 		//JPanel contentPane = new JPanel(new BorderLayout());
 		contentPane.setOpaque(true);
-
+		
+		if (wordController == null) {
+			FileChooser.setText("选择词库");
+			begin.setEnabled(false);
+			type.setEnabled(false);
+			Number.setEnabled(false);
+		}
+		else{
+			FileChooser.setText("重新选择词库");
+		}
+		
 		javax.swing.GroupLayout logoLayout = new javax.swing.GroupLayout(logo);
         logo.setLayout(logoLayout);
         logoLayout.setHorizontalGroup(
@@ -423,49 +481,46 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         );
         logoLayout.setVerticalGroup(
             logoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 70, Short.MAX_VALUE)
+            .addGap(0, 86, Short.MAX_VALUE)
         );
 
         begin.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         begin.setText("开始背单词");
-        begin.addActionListener(this);
 
         type.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         type.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "重新开始", "上次结束单词开始", "选定单词开始" }));
-
-        selfDefine.setForeground(new java.awt.Color(102, 102, 102));
-        selfDefine.setText("word");
+        
+        Number.setForeground(new java.awt.Color(102, 102, 102));
+        //Number.setText("number");
 
         jLabel2.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         jLabel2.setText("词库");
 
-        wordlist.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
-        wordlist.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel1.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         jLabel1.setText("方式");
+
+        jLabel3.setText("单词数");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(164, 164, 164)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1))
-                .addGap(32, 32, 32)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(type, 0, 150, Short.MAX_VALUE)
-                    .addComponent(wordlist, 0, 150, Short.MAX_VALUE))
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(194, Short.MAX_VALUE)
-                .addComponent(begin, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(220, 220, 220)
-                .addComponent(selfDefine, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(154, 154, 154)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(type, 0, 176, Short.MAX_VALUE)
+                            .addComponent(Number, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                            .addComponent(FileChooser, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addContainerGap(214, Short.MAX_VALUE)
+                        .addComponent(begin, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -473,20 +528,21 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(wordlist, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(FileChooser))
+                .addGap(25, 25, 25)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addGap(18, 18, 18)
-                .addComponent(selfDefine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14)
-                .addComponent(begin, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Number, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(25, 25, 25)
+                .addComponent(begin, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(contentPane);
+        contentPane.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -515,7 +571,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		// Add the text area to the content pane.
 		//contentPane.add(scrollPane, BorderLayout.CENTER);
 
-		return contentPane;
+		//return contentPane;
 	}
 
 	/** Returns an ImageIcon, or null if the path was invalid. */
@@ -555,8 +611,10 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 
 		// 主界面
 		MainView demo = new MainView();
+		demo.addlistener();
 		frame.setJMenuBar(demo.createMenuBar());
-		frame.setContentPane(demo.createContentPane());
+		demo.createContentPane();
+		frame.setContentPane(demo.contentPane);
 		// 使窗口居中
 		Toolkit kit = Toolkit.getDefaultToolkit(); // 定义工具包
 		Dimension screenSize = kit.getScreenSize(); // 获取屏幕的尺寸
@@ -598,6 +656,8 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			for(int i=0;i<items.size();i++){
 				cmb.addItem(items.get(i));
 			}
+			if(cmb.getItemCount()>1&&cmb.getItemAt(0).toString().equals(cmb.getItemAt(1).toString()))
+				cmb.removeItemAt(0);
 			cmb.showPopup();
 			inputfield.setCaretPosition(caretPosition);
 		}
