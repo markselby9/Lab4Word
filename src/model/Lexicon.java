@@ -10,6 +10,10 @@ public class Lexicon {
 	
 	public Lexicon(String lexiconName, String URL, int wrongNum, int alreadyNum, int totalNum){
 		this.lexiconName = lexiconName;
+		this.URL = URL;
+		this.wrongNum = wrongNum;
+		this.alreadyNum = alreadyNum;
+		this.totalNum = totalNum;
 	}
 	
 	public String getLexiconName() {
