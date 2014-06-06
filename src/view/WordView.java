@@ -37,7 +37,11 @@ public class WordView extends javax.swing.JPanel {
         NOTOK = new javax.swing.JButton();
         ChiLabel = new javax.swing.JLabel();
         EngLabel = new javax.swing.JLabel();
+<<<<<<< master
         ReturnButton = new javax.swing.JButton();
+=======
+        CorrectEng = new javax.swing.JTextField();
+>>>>>>> b6a67f7 wordview remove correcteng textfield
 
         Chi.setFont(new java.awt.Font("微软雅黑", 0, 12));
         Chi.setText("中文释义");
@@ -80,6 +84,14 @@ public class WordView extends javax.swing.JPanel {
 
         ReturnButton.setText("返回主界面");
 
+        CorrectEng.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
+        CorrectEng.setText("正确释义");
+        CorrectEng.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CorrectEngActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -87,6 +99,7 @@ public class WordView extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(64, 64, 64)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(CorrectEng, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
                     .addComponent(EngLabel, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ChiLabel, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Eng, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
@@ -118,9 +131,15 @@ public class WordView extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(NOTOK)
                     .addComponent(OK))
+<<<<<<< master
                 .addGap(52, 52, 52)
                 .addComponent(ReturnButton)
                 .addContainerGap())
+=======
+                .addGap(18, 18, 18)
+                .addComponent(CorrectEng, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32))
+>>>>>>> b6a67f7 wordview remove correcteng textfield
         );
     }// </editor-fold>
 
@@ -144,6 +163,7 @@ public class WordView extends javax.swing.JPanel {
     // Variables declaration - do not modify
     private javax.swing.JTextField Chi;
     private javax.swing.JLabel ChiLabel;
+    private javax.swing.JTextField CorrectEng;
     private javax.swing.JTextField Eng;
     private javax.swing.JLabel EngLabel;
     private javax.swing.JButton NOTOK;
