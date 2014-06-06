@@ -36,8 +36,8 @@ import controller.WordController;
  */
 @SuppressWarnings("serial")
 public class MainView extends JFrame implements KeyListener, ActionListener {
-	JTextArea output;
-	JScrollPane scrollPane;
+	//JTextArea output;
+	//JScrollPane scrollPane;
 	JPanel contentPane = new JPanel(new BorderLayout());
 	
 	String wordPath = "./wordlist/word.txt";
@@ -52,23 +52,31 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	JMenuItem helpItem = new JMenuItem("帮助");
 	JMenuItem AboutItem = new JMenuItem("Lab作者信息");
 
+	//
+    private JButton begin=new JButton();
+    private JLabel jLabel1=new JLabel();
+    private JLabel jLabel2=new JLabel();
+    private JPanel jPanel2=new JPanel();
+    private JPanel logo=new JPanel();
+    private JTextField selfDefine=new JTextField();
+    private JComboBox type=new JComboBox();
+    private JComboBox wordlist=new JComboBox();
+	//
+	
     // Variables declaration - do not modify
-    private javax.swing.JTextField Chi=new JTextField();
-    private javax.swing.JLabel ChiLabel=new JLabel();
-    private javax.swing.JTextField Eng=new JTextField();
-    private javax.swing.JLabel EngLabel=new JLabel();;
-    private javax.swing.JButton NOTOK=new JButton();
-    private javax.swing.JButton OK=new JButton();
+    private JTextField Chi=new JTextField();
+    private JLabel ChiLabel=new JLabel();
+    private JTextField Eng=new JTextField();
+    private JLabel EngLabel=new JLabel();;
+    private JButton NOTOK=new JButton();
+    private JButton OK=new JButton();
+    private JButton ReturnButton=new JButton();
     // End of variables declaration
 
     JFrame selectwordframe=new JFrame();
     JComboBox cmb = new JComboBox();
 	JTextField inputfield=(JTextField)cmb.getEditor().getEditorComponent();
     JButton selectworddone=new JButton("确定");
-	//JTextField wordtofill=new JTextField(1);
-	//JTextArea wordmeaning=new JTextArea();
-	//JButton ok=new JButton("确认");
-	//JButton skip=new JButton("跳过");
 	
 	static WordController wordController = null;
 	int start;
@@ -191,6 +199,8 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			else
 				Chi.setText(wordController.getWordByID(currindex).getMeaning());
 			Eng.setText("");
+		} else if(e.getSource() == ReturnButton){
+			
 		} else if(e.getSource() == selectworddone){
 			int tmp=wordController.getIDByWord(inputfield.getText());
 			if(tmp==-1){
@@ -337,43 +347,53 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 
         EngLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         EngLabel.setText("单词输入");
-
+        
+        ReturnButton.setText("返回主界面");
+        ReturnButton.removeActionListener(this);
+        ReturnButton.addActionListener(this);
+        
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(contentPane);
         contentPane.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(64, 64, 64)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(EngLabel, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ChiLabel, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Eng, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
-                    .addComponent(Chi, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(OK)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGap(64, 64, 64)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(EngLabel, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(ChiLabel, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(Eng, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+                        .addComponent(Chi, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(OK, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(42, 42, 42)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(ReturnButton, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(NOTOK, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGap(50, 50, 50))
+            );
+            layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(34, 34, 34)
+                    .addComponent(ChiLabel)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(Chi, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(EngLabel)
+                    .addGap(3, 3, 3)
+                    .addComponent(Eng, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(18, 18, 18)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(NOTOK)
-                        .addGap(12, 12, 12)))
-                .addGap(50, 50, 50))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(ChiLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Chi, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(EngLabel)
-                .addGap(3, 3, 3)
-                .addComponent(Eng, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(NOTOK)
-                    .addComponent(OK))
-                .addGap(18, 18, 18))
-        );
+                        .addComponent(OK))
+                    .addGap(52, 52, 52)
+                    .addComponent(ReturnButton)
+                    .addContainerGap())
+            );
 		//for (int tmp = startint; tmp < startint + duration; tmp++) {
 		currindex=startint;
 		Word word = wordController.getWordByID(currindex);
@@ -395,15 +415,105 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		//JPanel contentPane = new JPanel(new BorderLayout());
 		contentPane.setOpaque(true);
 
+		javax.swing.GroupLayout logoLayout = new javax.swing.GroupLayout(logo);
+        logo.setLayout(logoLayout);
+        logoLayout.setHorizontalGroup(
+            logoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 380, Short.MAX_VALUE)
+        );
+        logoLayout.setVerticalGroup(
+            logoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 70, Short.MAX_VALUE)
+        );
+
+        begin.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
+        begin.setText("开始背单词");
+        begin.addActionListener(this);
+
+        type.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
+        type.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "重新开始", "上次结束单词开始", "选定单词开始" }));
+
+        selfDefine.setForeground(new java.awt.Color(102, 102, 102));
+        selfDefine.setText("word");
+
+        jLabel2.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
+        jLabel2.setText("词库");
+
+        wordlist.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
+        wordlist.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel1.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
+        jLabel1.setText("方式");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(164, 164, 164)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1))
+                .addGap(32, 32, 32)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(type, 0, 150, Short.MAX_VALUE)
+                    .addComponent(wordlist, 0, 150, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(194, Short.MAX_VALUE)
+                .addComponent(begin, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(220, 220, 220)
+                .addComponent(selfDefine, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(wordlist, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
+                .addComponent(selfDefine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addComponent(begin, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(37, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 		// Create a scrolled text area.
-		output = new JTextArea(5, 5);
-		output.setEditable(false);
-		output.setText("此处为TextArea");
+		//output = new JTextArea(5, 5);
+		//output.setEditable(false);
+		//output.setText("此处为TextArea");
 		//output.setBorder(javax.swing.border.LineBorder.createBlackLineBorder());
-		scrollPane = new JScrollPane(output);
+		//scrollPane = new JScrollPane(output);
 		//scrollPane.add();
 		// Add the text area to the content pane.
-		contentPane.add(scrollPane, BorderLayout.CENTER);
+		//contentPane.add(scrollPane, BorderLayout.CENTER);
 
 		return contentPane;
 	}
