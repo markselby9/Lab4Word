@@ -122,23 +122,23 @@ public class WordView extends javax.swing.JPanel {
                 .addComponent(ReturnButton)
                 .addContainerGap())
         );
-    }
+    }// </editor-fold>
 
-    private void ChiActionPerformed(java.awt.event.ActionEvent evt) {
+    private void ChiActionPerformed(java.awt.event.ActionEvent evt) {                                    
         // TODO add your handling code here:
-    }
+    }                                   
 
-    private void EngActionPerformed(java.awt.event.ActionEvent evt) {
+    private void EngActionPerformed(java.awt.event.ActionEvent evt) {                                    
         // TODO add your handling code here:
-    }
+    }                                   
 
-    private void OKActionPerformed(java.awt.event.ActionEvent evt) {
+    private void OKActionPerformed(java.awt.event.ActionEvent evt) {                                   
         // TODO add your handling code here:
-    }
+    }                                  
 
-    private void NOTOKActionPerformed(java.awt.event.ActionEvent evt) {
+    private void NOTOKActionPerformed(java.awt.event.ActionEvent evt) {                                      
         // TODO add your handling code here:
-    }
+    }                                     
 
 
     // Variables declaration - do not modify
@@ -150,5 +150,4 @@ public class WordView extends javax.swing.JPanel {
     private javax.swing.JButton OK;
     private javax.swing.JButton ReturnButton;
     // End of variables declaration
-
 }
