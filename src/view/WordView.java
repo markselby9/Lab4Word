@@ -140,14 +140,10 @@ public class WordView extends javax.swing.JPanel {
         // TODO add your handling code here:
     }
 
-    private void CorrectEngActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
 
     // Variables declaration - do not modify
     private javax.swing.JTextField Chi;
     private javax.swing.JLabel ChiLabel;
-    private javax.swing.JTextField CorrectEng;
     private javax.swing.JTextField Eng;
     private javax.swing.JLabel EngLabel;
     private javax.swing.JButton NOTOK;
