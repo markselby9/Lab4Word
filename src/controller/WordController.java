@@ -63,7 +63,7 @@ public class WordController {
 			line = br.readLine();
 			while (line != null) {
 				String[] arr = line.split(" ");
-				Word word = new Word(id, arr[0], arr[arr.length - 1]);
+				Word word = new Word(id, arr[0], arr[arr.length - 1],arr[0].substring(0, 1));
 				id++;
 				this.wordlist.add(word);
 				line = br.readLine();

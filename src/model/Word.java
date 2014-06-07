@@ -6,6 +6,7 @@ public class Word {
 	int ID;
 	String word;
 	String meaning;
+	String start;
 	
 	public int getID() {
 		return ID;
@@ -15,6 +16,9 @@ public class Word {
 		ID = iD;
 	}
 
+	public String getStart(){
+		return start;
+	}
 	
 	public String getWord() {
 		return word;
@@ -37,9 +41,10 @@ public class Word {
 	}
 	
 	//Constructor
-	public Word(int ID, String word, String meaning){
+	public Word(int ID, String word, String meaning, String start){
 		this.ID = ID;
 		this.word = word;
 		this.meaning = meaning;
+		this.start=start;
 	}
 }
