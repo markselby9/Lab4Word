@@ -3,14 +3,12 @@ package model;
 public class Lexicon {
 	
 	String lexiconName;
-	String URL;
 	int wrongNum;
 	int alreadyNum;
 	int totalNum;
 	
-	public Lexicon(String lexiconName, String URL, int wrongNum, int alreadyNum, int totalNum){
+	public Lexicon(String lexiconName, int wrongNum, int alreadyNum, int totalNum){
 		this.lexiconName = lexiconName;
-		this.URL = URL;
 		this.wrongNum = wrongNum;
 		this.alreadyNum = alreadyNum;
 		this.totalNum = totalNum;
@@ -21,12 +19,6 @@ public class Lexicon {
 	}
 	public void setLexiconName(String lexiconName) {
 		this.lexiconName = lexiconName;
-	}
-	public String getURL() {
-		return URL;
-	}
-	public void setURL(String uRL) {
-		URL = uRL;
 	}
 	public int getWrongNum() {
 		return wrongNum;

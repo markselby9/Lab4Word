@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.DecimalFormat;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -28,13 +29,29 @@ import javax.swing.JOptionPane;
  * @author Administrator
  */
 public class Data_small extends javax.swing.JFrame {
-
+	String wordlistNamestr;
+	int totalNumber;
+	int alreadyNumber;
+	int correctNumber;
+	int wrongNumber;
+	String correctrate;
+	
     /** Creates new form data_small_frame */
     public Data_small() {
         initComponents();
     }
-    public Data_small(String title) {
+    public Data_small(String title,String wordlistName, int totalNumber,int alreadyNumber,int correctNumber) {
     	this.setTitle(title);
+    	this.wordlistNamestr=wordlistName;
+    	this.totalNumber=totalNumber;
+    	this.alreadyNumber=alreadyNumber;
+    	this.correctNumber=correctNumber;
+    	this.wrongNumber=alreadyNumber-correctNumber;
+    	double rate=correctNumber*100.0/alreadyNumber;
+		DecimalFormat df = new DecimalFormat("#.00");
+    	this.correctrate=df.format(rate)+"%";
+    	if(correctrate.startsWith("."))
+    		correctrate="0"+correctrate;
         initComponents();
     }
 
@@ -64,8 +81,6 @@ public class Data_small extends javax.swing.JFrame {
         logo = new javax.swing.JPanel();
         logoIcon = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jPanel1.setFont(new java.awt.Font("微软雅黑", 0, 12));
         jPanel1.setPreferredSize(new java.awt.Dimension(468, 357));
         jPanel1.setBackground(Color.white);
@@ -73,32 +88,38 @@ public class Data_small extends javax.swing.JFrame {
         totalNumLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         totalNumLabel.setText("单词总数");
 
-        totalNum.setText("totalNumber");
+        totalNum.setText(totalNumber+"");
+        totalNum.setEditable(false);
 
         alreadyNumLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         alreadyNumLabel.setText("已背单词数");
 
-        alreadyNum.setText("alreadyNumber");
+        alreadyNum.setText(alreadyNumber+"");
+        alreadyNum.setEditable(false);
 
         correctNumLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         correctNumLabel.setText("正确单词数");
 
-        correctNum.setText("correctNumber");
+        correctNum.setText(correctNumber+"");
+        correctNum.setEditable(false);
 
         wrongNumLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         wrongNumLabel.setText("错误单词数");
 
-        wrongNum.setText("wrongNum");
+        wrongNum.setText(wrongNumber+"");
+        wrongNum.setEditable(false);
 
         correctRateLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         correctRateLabel.setText("正确率");
 
-        correctRate.setText("correctRate");
+        correctRate.setText(correctrate);
+        correctRate.setEditable(false);
 
         wordlistNameLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         wordlistNameLabel.setText("词库名称");
 
-        wordlistName.setText("wordlistName");
+        wordlistName.setText(wordlistNamestr);
+        wordlistName.setEditable(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -211,7 +232,7 @@ public class Data_small extends javax.swing.JFrame {
     
     
     
-    public static void createAndShowGUI(){
+    public static void createAndShowGUI(final String wordlistName,final int totalNumber,final int alreadyNumber,final int correctNumber){
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -223,7 +244,7 @@ public class Data_small extends javax.swing.JFrame {
         		int screenHeight = screenSize.height / 2; // 获取屏幕的高
         		int width = 250;
         		int height = 400;
-                Data_small datasmall = new Data_small("背词统计");
+                Data_small datasmall = new Data_small("背词统计",wordlistName,totalNumber,alreadyNumber,correctNumber);
                 datasmall.setVisible(true);
                 datasmall.setLocation(screenWidth - width / 2, screenHeight - height / 2);
                 datasmall.setSize(width,height);
@@ -232,12 +253,7 @@ public class Data_small extends javax.swing.JFrame {
 
         		ImageIcon image = new ImageIcon("./images/icon.jpg");
         		datasmall.setIconImage(image.getImage());
-        		datasmall.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        		datasmall.addWindowListener(new WindowAdapter() {
-        			public void windowClosing(WindowEvent e) {
-        					System.exit(0);
-        			}
-        		});
+        		datasmall.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             }
         });
     }
@@ -246,7 +262,7 @@ public class Data_small extends javax.swing.JFrame {
     * @param args the command line arguments
     */
     public static void main(String args[]) {
-    	createAndShowGUI();
+    	//createAndShowGUI();
     }
     
 

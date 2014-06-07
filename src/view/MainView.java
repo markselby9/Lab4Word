@@ -26,6 +26,7 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
+import model.Lexicon;
 import model.Word;
 import controller.WordController;
 
@@ -37,19 +38,12 @@ import controller.WordController;
  */
 @SuppressWarnings("serial")
 public class MainView extends JFrame implements KeyListener, ActionListener {
-	//JTextArea output;
-	//JScrollPane scrollPane;
 	JPanel contentPane = new JPanel(new BorderLayout());
 	
 	String wordPath = "./wordlist/word.txt";
 	String recordPath = "./record/record.dat";
 
-	//JMenuItem chooseItem = new JMenuItem("选择词库");
-	//JMenuItem startwordItem = new JMenuItem("从头开始背！");
-	//JMenuItem continueItem = new JMenuItem("从上次停止的地方继续！");
-	//JMenuItem selectItem = new JMenuItem("自己选择从哪里开始背！");
 	JMenuItem recordItem = new JMenuItem("查看词库统计信息");
-	//JMenuItem allrecordItem = new JMenuItem("查看历史背单词记录");
 	JMenuItem helpItem = new JMenuItem("帮助");
 	JMenuItem AboutItem = new JMenuItem("Lab作者信息");
 
@@ -105,26 +99,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		menu.getAccessibleContext().setAccessibleDescription("System menu");
 		menuBar.add(menu);
 
-		// 开始菜单项
-		// ImageIcon icon = createImageIcon("/images/start.jpg");
-		//chooseItem.setMnemonic(KeyEvent.VK_D);
-		//chooseItem.addActionListener(this);
-		//menu.add(chooseItem);
-		/*
-		startwordItem.setMnemonic(KeyEvent.VK_D);
-		startwordItem.addActionListener(this);
-		menu.add(startwordItem);
-
-		continueItem.setMnemonic(KeyEvent.VK_D);
-		continueItem.addActionListener(this);
-		menu.add(continueItem);
-		
-		selectItem.setMnemonic(KeyEvent.VK_D);
-		selectItem.addActionListener(this);
-		menu.add(selectItem);
-		
-		menu.addSeparator();
-		*/
 		recordItem.setMnemonic(KeyEvent.VK_D);
 		recordItem.addActionListener(this);
 		menu.add(recordItem);
@@ -141,14 +115,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		AboutItem.addActionListener(this);
 		menu.add(AboutItem);
 
-		/*
-		if (wordController == null) {
-			startwordItem.setEnabled(false);
-			continueItem.setEnabled(false);
-			selectItem.setEnabled(false);
-			recordItem.setEnabled(false);
-		}*/
-
 		return menuBar;
 	}
 	
@@ -159,6 +125,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         NOTOK.addActionListener(this);
         ReturnButton.addActionListener(this);
         FileChooser.addActionListener(this);
+        stats.addActionListener(this);
         begin.addActionListener(this);
         type.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
@@ -179,7 +146,17 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			int recordcount=wordController.getRecordCount();
 			int recordrightcount=wordController.getRecordRightCount();
 			new RecordView(wordController.getListName(),wordController.getAllCount(),recordcount,recordrightcount,recordcount-recordrightcount);
-		} else if (e.getSource() == helpItem) {
+		} else if(e.getSource()==stats){
+			//int pre_total,int pre_already,int pre_correct,int all_total,int all_already,int all_correct
+    		ArrayList<Lexicon> lexiconstats=wordController.getLexiconStats();
+    		char start=range.getSelectedItem().toString().toUpperCase().charAt(0);
+			Lexicon pre=lexiconstats.get(start-65);
+			System.out.println("lexi stats");
+			for(int i=0;i<lexiconstats.size();i++){
+				System.out.println(lexiconstats.get(i).getAlreadyNum());
+			}
+			//Data_all data_all=new Data_all();
+			//data_all.initiateChart(pre.getTotalNum(), pre.getAlreadyNum(), pre.getAlreadyNum()-pre.getWrongNum(), wordController.getAllCount(), wordController.getRecordCount(), wordController.getRecordRightCount(), lexiconstats);		} else if (e.getSource() == helpItem) {
 			// TODO
 		} else if (e.getSource() == AboutItem) {
 			JOptionPane.showMessageDialog(this,
@@ -192,19 +169,36 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			wrongnum=0;
 			int index=type.getSelectedIndex();
 			if(index == 0){
-				start=0;
+				start=wordController.getStartInLexicon(range.getSelectedItem().toString());
+				if(start==-1){
+					JOptionPane.showMessageDialog(this, "您选择的文件中没有该词库", "出错啦",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				//start=0;
 			} else if (index == 1) {
-				start=wordController.getLastto()+1;
-				if(start==wordController.getAllCount())
-					start=0;//上次背到最后，重新开始背
-				//afterselectword();
+				start=wordController.getLasttoInLexicon(range.getSelectedItem().toString());
+				if(start==-1)
+					start=wordController.getStartInLexicon(range.getSelectedItem().toString());
+				if(start==wordController.getLastInLexicon(range.getSelectedItem().toString())){
+					start=wordController.getStartInLexicon(range.getSelectedItem().toString());//上次背到最后，重新开始背
+					if(start==-1){
+						JOptionPane.showMessageDialog(this, "您选择的文件中没有该词库", "出错啦",
+								JOptionPane.WARNING_MESSAGE);
+						return;
+					}
+				}
+				else{
+					start++;//从没背过该词库，从头开始
+				}
+					//afterselectword();
 			} //else if (index == 2) {//自己选从哪里背
 				// TODO
 				//selectWord();
 			//}
 			String input = Number.getText();
 			if (input.equals("")) {
-				JOptionPane.showMessageDialog(this, "您忘记背诵单词数了吧。。。", "出错啦",
+				JOptionPane.showMessageDialog(this, "您忘记输入背诵单词数了吧。。。", "出错啦",
 						JOptionPane.WARNING_MESSAGE);
 				return;
 			}
@@ -255,7 +249,8 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			if(currindex>=start+wordnum){
 				//给出统计信息
 				wordController.mergerecord();
-				new RecordView(wordController.getListName(),wordnum,wordnum,rightnum,wrongnum);
+				Data_small.createAndShowGUI(range.getSelectedItem().toString().toUpperCase(), wordController.getTotalInLexicon(range.getSelectedItem().toString().toUpperCase()), wordnum, rightnum);
+				//new RecordView(wordController.getListName(),wordnum,wordnum,rightnum,wrongnum);
 			}
 			else
 				Chi.setText(wordController.getWordByID(currindex).getMeaning());
@@ -264,34 +259,24 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			contentPane.removeAll();
 			createContentPane();
 		} else if(e.getSource() == selectworddone){
-			int tmp=wordController.getIDByWord(inputfield.getText());
-			if(tmp==-1){
+			if(inputfield.getText().toUpperCase().charAt(0)!=range.getSelectedItem().toString().toUpperCase().charAt(0)){
 				JOptionPane.showMessageDialog(this,"词库中没有您输入的单词，将默认从第一个单词开始", "出错啦",
 						JOptionPane.WARNING_MESSAGE);
-				start=0;
+				start=wordController.getStartInLexicon(range.getSelectedItem().toString());
 			}
-			else
-				start=tmp;
+			else{
+				int tmp=wordController.getIDByWord(inputfield.getText());
+				if(tmp==-1){
+					JOptionPane.showMessageDialog(this,"词库中没有您输入的单词，将默认从第一个单词开始", "出错啦",
+							JOptionPane.WARNING_MESSAGE);
+					start=wordController.getStartInLexicon(range.getSelectedItem().toString());
+				}
+				else
+					start=tmp;
+			}
 			selectwordframe.dispose();
 			//afterselectword();
-		} /*else{
-			start=0;
-			wordnum=0;
-			rightnum=0;
-			wrongnum=0;
-			if (e.getSource() == startwordItem) {
-				afterselectword();
-			} else if (e.getSource() == continueItem) {
-				// TODO
-				start=wordController.getLastto()+1;
-				if(start==wordController.getAllCount())
-					start=0;//上次背到最后，重新开始背
-				afterselectword();
-			} else if (e.getSource() == selectItem) {
-				// TODO
-				selectWord();
-			}
-		}*/
+		}
 	}
 
 	public void chooseFile() {
@@ -304,12 +289,11 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			wordPath = chooser.getSelectedFile().getPath();
 			wordController = new WordController(wordPath);
 			FileChooser.setText("重新选择词库");
+			filename.setText(wordController.getListName());
 			begin.setEnabled(true);
+			stats.setEnabled(true);
 			type.setEnabled(true);
 			Number.setEnabled(true);
-			//startwordItem.setEnabled(true);
-			//continueItem.setEnabled(true);
-			//selectItem.setEnabled(true);
 			recordItem.setEnabled(true);
 			// TODO
 		} else {
@@ -351,9 +335,14 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	}*/
 	
 	public void afterselectword(){
-		int valid=wordController.isValid(start, wordnum);
+		int valid=wordController.isValid(start, wordnum, range.getSelectedItem().toString());
 		if (valid==-1) {
 			JOptionPane.showMessageDialog(this, "您输入的单词数太坑爹，臣妾办不到啊。。。", "出错啦",
+					JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		else if(valid==-2){
+			JOptionPane.showMessageDialog(this, "您输入的单词不在词库内，臣妾办不到啊。。。", "出错啦",
 					JOptionPane.WARNING_MESSAGE);
 			return;
 		}
@@ -372,15 +361,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	public void recitationview(int startint, int duration) {
 		//wordController.startReciting(startint, duration);
 		contentPane.removeAll();
-		/*contentPane.setLayout(new GridLayout(2,2));
-		contentPane.add(wordtofill);
-		contentPane.add(wordmeaning);
-		ok.removeActionListener(this);
-		ok.addActionListener(this);
-		contentPane.add(ok);
-		//contentPane.removeAll();
-		contentPane.revalidate();
-		*/
 
         Chi.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         Chi.setText("中文释义");
@@ -472,6 +452,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		if (wordController == null) {
 			FileChooser.setText("选择词库");
 			begin.setEnabled(false);
+			stats.setEnabled(false);
 			type.setEnabled(false);
 			Number.setEnabled(false);
 		}
@@ -519,7 +500,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 
         Number.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         Number.setForeground(new java.awt.Color(102, 102, 102));
-        Number.setText("number");
+        //Number.setText("number");
 
         jLabel2.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         jLabel2.setText("路径");
@@ -541,7 +522,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         range.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" }));
 
         filename.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
-        filename.setText("filename");
+        //filename.setText("filename");
         
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -707,7 +688,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		if(e.getSource()==inputfield){
 			int caretPosition = inputfield.getCaretPosition();
 			String input=inputfield.getText();
-			ArrayList<String> items=wordController.getSimilarWords(input);
+			ArrayList<String> items=wordController.getSimilarWords(input,range.getSelectedItem().toString());
 			cmb.setMaximumRowCount(11);
 			cmb.hidePopup();
 			cmb.removeAllItems();
@@ -722,49 +703,4 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		}
 	}
 
-	class comboboxtest extends JFrame {
-
-		JComboBox cmb = new JComboBox();
-		JTextField inputfield=(JTextField)cmb.getEditor().getEditorComponent();
-		
-		public comboboxtest(){
-		   	cmb.setEditable(true);
-		   	//cmb.setPopupVisible(true);
-		   	inputfield.addKeyListener(new autocompleter());
-		   	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		   	this.getContentPane().setLayout(new GridLayout(1,2));
-		    this.getContentPane().add(cmb);
-		    this.getContentPane().add(selectworddone);
-		    this.setSize(400,80);
-		    this.setVisible(true);
-		}
-		
-		
-		class autocompleter implements KeyListener {
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-				ArrayList<String> items=wordController.getSimilarWords(inputfield.getText());
-				cmb.removeAllItems();
-				for(int i=0;i<items.size();i++){
-					cmb.addItem(items.get(i));
-				}
-				cmb.showPopup();
-			}
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		}
-	}
 }

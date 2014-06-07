@@ -603,6 +603,7 @@ public class Data_all extends javax.swing.JFrame {
     }
     
     /**
+     * pre_ = present
      * 
      * @param pre_total
      * @param pre_already
@@ -629,8 +630,6 @@ public class Data_all extends javax.swing.JFrame {
     	
     }
     
-
-
 
     public String getWordlistName() {
 		return wordlistName;
