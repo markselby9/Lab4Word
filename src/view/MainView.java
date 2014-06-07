@@ -488,6 +488,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 
         ImageIcon logoPNG = new ImageIcon("./images/logo.png");
         logoIcon.setIcon(logoPNG);
+        
         logoLayout.setHorizontalGroup(
             logoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(logoIcon)

@@ -21,8 +21,8 @@ public class Test {
 	    array.add(lex2);
 	    array.add(lex3);
 	    
-	    frame.add(new BarChart(array,1).getChartPanel());           //添加柱形图  
-	    //frame.add(new PieChart(array,1).getChartPanel());           //添加饼状图  
+	    //frame.add(new BarChart(array,1).getChartPanel());           //添加柱形图  
+	    frame.add(new PieChart(1,20,40).getChartPanel());           //添加饼状图  
 	    frame.setBounds(50, 50, 800, 600);  
 	    frame.setVisible(true);  
 	}  

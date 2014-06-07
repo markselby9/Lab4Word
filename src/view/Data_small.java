@@ -1,8 +1,20 @@
 package view;
+
+import graph.PieChart;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+import javax.swing.JOptionPane;
 
 /*
  * data_small_frame.java
@@ -15,10 +27,14 @@ package view;
  *
  * @author Administrator
  */
-public class Data_small extends javax.swing.JPanel {
+public class Data_small extends javax.swing.JFrame {
 
-    /** Creates new form 统计 */
+    /** Creates new form data_small_frame */
     public Data_small() {
+        initComponents();
+    }
+    public Data_small(String title) {
+    	this.setTitle(title);
         initComponents();
     }
 
@@ -32,6 +48,7 @@ public class Data_small extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         totalNumLabel = new javax.swing.JLabel();
         totalNum = new javax.swing.JTextField();
         alreadyNumLabel = new javax.swing.JLabel();
@@ -41,249 +58,205 @@ public class Data_small extends javax.swing.JPanel {
         wrongNumLabel = new javax.swing.JLabel();
         wrongNum = new javax.swing.JTextField();
         correctRateLabel = new javax.swing.JLabel();
-        wrongNum1 = new javax.swing.JTextField();
+        correctRate = new javax.swing.JTextField();
         wordlistNameLabel = new javax.swing.JLabel();
         wordlistName = new javax.swing.JTextField();
-        Logo = new javax.swing.JPanel();
-        piePanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        pieGraph1 = new javax.swing.JPanel();
-        piePanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        pieGraph2 = new javax.swing.JPanel();
+        logo = new javax.swing.JPanel();
+        logoIcon = new javax.swing.JLabel();
 
-        setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
-        setPreferredSize(new java.awt.Dimension(468, 357));
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        totalNumLabel.setFont(new java.awt.Font("微软雅黑", 0, 12));
+        jPanel1.setFont(new java.awt.Font("微软雅黑", 0, 12));
+        jPanel1.setPreferredSize(new java.awt.Dimension(468, 357));
+        jPanel1.setBackground(Color.white);
+        
+        totalNumLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         totalNumLabel.setText("单词总数");
 
         totalNum.setText("totalNumber");
 
-        alreadyNumLabel.setFont(new java.awt.Font("微软雅黑", 0, 12));
+        alreadyNumLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         alreadyNumLabel.setText("已背单词数");
 
         alreadyNum.setText("alreadyNumber");
 
-        correctNumLabel.setFont(new java.awt.Font("微软雅黑", 0, 12));
+        correctNumLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         correctNumLabel.setText("正确单词数");
 
         correctNum.setText("correctNumber");
 
-        wrongNumLabel.setFont(new java.awt.Font("微软雅黑", 0, 12));
+        wrongNumLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         wrongNumLabel.setText("错误单词数");
 
-        wrongNum.setText("correctNum");
+        wrongNum.setText("wrongNum");
 
-        correctRateLabel.setFont(new java.awt.Font("微软雅黑", 0, 12));
+        correctRateLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         correctRateLabel.setText("正确率");
 
-        wrongNum1.setText("correctRate");
-        wrongNum1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                wrongNum1ActionPerformed(evt);
-            }
-        });
+        correctRate.setText("correctRate");
 
-        wordlistNameLabel.setFont(new java.awt.Font("微软雅黑", 0, 12));
+        wordlistNameLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         wordlistNameLabel.setText("词库名称");
 
         wordlistName.setText("wordlistName");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2.setBackground(Color.white);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(wordlistNameLabel)
+                    .addComponent(totalNumLabel)
+                    .addComponent(alreadyNumLabel)
+                    .addComponent(correctNumLabel)
+                    .addComponent(wrongNumLabel)
+                    .addComponent(correctRateLabel))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(correctNum, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+                    .addComponent(alreadyNum, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+                    .addComponent(totalNum, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+                    .addComponent(wordlistName, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+                    .addComponent(wrongNum, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+                    .addComponent(correctRate, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(16, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(wordlistNameLabel)
+                    .addComponent(wordlistName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(totalNumLabel)
+                    .addComponent(totalNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(alreadyNumLabel)
+                    .addComponent(alreadyNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(correctNumLabel)
+                    .addComponent(correctNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(wrongNumLabel)
+                    .addComponent(wrongNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(correctRateLabel)
+                    .addComponent(correctRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18))
+        );
+
+        javax.swing.GroupLayout logoLayout = new javax.swing.GroupLayout(logo);
+        logo.setLayout(logoLayout);
+        logo.setBackground(Color.white);
+
+        ImageIcon logoPNG = new ImageIcon("./images/logo2.png");
+        logoIcon.setIcon(logoPNG);
+        logoLayout.setHorizontalGroup(
+            logoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(logoIcon, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+        );
+        logoLayout.setVerticalGroup(
+            logoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(logoIcon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addComponent(correctRateLabel)
-                        .addGap(10, 10, 10)
-                        .addComponent(wrongNum1, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(wrongNumLabel)
-                        .addGap(10, 10, 10)
-                        .addComponent(wrongNum, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(correctNumLabel)
-                        .addGap(10, 10, 10)
-                        .addComponent(correctNum, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(alreadyNumLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(alreadyNum, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(totalNumLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(totalNum, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(wordlistNameLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(wordlistName, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)))
-                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(logo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(37, 37, 37))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(wordlistName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(wordlistNameLabel))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(totalNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(totalNumLabel))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(alreadyNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(alreadyNumLabel))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(correctNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(correctNumLabel))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(wrongNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(wrongNumLabel))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(wrongNum1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(correctRateLabel))
-                .addGap(18, 18, 18))
-        );
-
-        javax.swing.GroupLayout LogoLayout = new javax.swing.GroupLayout(Logo);
-        Logo.setLayout(LogoLayout);
-        LogoLayout.setHorizontalGroup(
-            LogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 209, Short.MAX_VALUE)
-        );
-        LogoLayout.setVerticalGroup(
-            LogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 90, Short.MAX_VALUE)
-        );
-
-        jLabel1.setFont(new java.awt.Font("微软雅黑", 0, 12));
-        jLabel1.setText("正确率比例");
-
-        javax.swing.GroupLayout pieGraph1Layout = new javax.swing.GroupLayout(pieGraph1);
-        pieGraph1.setLayout(pieGraph1Layout);
-        pieGraph1Layout.setHorizontalGroup(
-            pieGraph1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 172, Short.MAX_VALUE)
-        );
-        pieGraph1Layout.setVerticalGroup(
-            pieGraph1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 111, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout piePanel1Layout = new javax.swing.GroupLayout(piePanel1);
-        piePanel1.setLayout(piePanel1Layout);
-        piePanel1Layout.setHorizontalGroup(
-            piePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(piePanel1Layout.createSequentialGroup()
-                .addContainerGap(41, Short.MAX_VALUE)
-                .addGroup(piePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, piePanel1Layout.createSequentialGroup()
-                        .addComponent(pieGraph1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, piePanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(92, 92, 92))))
-        );
-        piePanel1Layout.setVerticalGroup(
-            piePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, piePanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pieGraph1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(10, 10, 10)
-                .addComponent(jLabel1)
-                .addContainerGap())
+                .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
-        jLabel2.setFont(new java.awt.Font("微软雅黑", 0, 12));
-        jLabel2.setText("总词库比例");
-
-        javax.swing.GroupLayout pieGraph2Layout = new javax.swing.GroupLayout(pieGraph2);
-        pieGraph2.setLayout(pieGraph2Layout);
-        pieGraph2Layout.setHorizontalGroup(
-            pieGraph2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 170, Short.MAX_VALUE)
-        );
-        pieGraph2Layout.setVerticalGroup(
-            pieGraph2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout piePanel2Layout = new javax.swing.GroupLayout(piePanel2);
-        piePanel2.setLayout(piePanel2Layout);
-        piePanel2Layout.setHorizontalGroup(
-            piePanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(piePanel2Layout.createSequentialGroup()
-                .addContainerGap(44, Short.MAX_VALUE)
-                .addGroup(piePanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, piePanel2Layout.createSequentialGroup()
-                        .addComponent(pieGraph2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(38, 38, 38))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, piePanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(95, 95, 95))))
-        );
-        piePanel2Layout.setVerticalGroup(
-            piePanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(piePanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pieGraph2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addContainerGap())
-        );
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(Logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(piePanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(piePanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 201, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(piePanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(piePanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 377, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(1, 1, 1)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)))
         );
-    }// </editor-fold>
 
-    private void wrongNum1ActionPerformed(java.awt.event.ActionEvent evt) {                                          
-        // TODO add your handling code here:
-}                                         
+        pack();
+    }// </editor-fold>                        
+    
+    
+    
+    public static void createAndShowGUI(){
+
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+            	
+        		// 使窗口居中
+        		Toolkit kit = Toolkit.getDefaultToolkit(); // 定义工具包
+        		Dimension screenSize = kit.getScreenSize(); // 获取屏幕的尺寸
+        		int screenWidth = screenSize.width / 2; // 获取屏幕的宽
+        		int screenHeight = screenSize.height / 2; // 获取屏幕的高
+        		int width = 250;
+        		int height = 400;
+                Data_small datasmall = new Data_small("背词统计");
+                datasmall.setVisible(true);
+                datasmall.setLocation(screenWidth - width / 2, screenHeight - height / 2);
+                datasmall.setSize(width,height);
+                
+                
+
+        		ImageIcon image = new ImageIcon("./images/icon.jpg");
+        		datasmall.setIconImage(image.getImage());
+        		datasmall.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        		datasmall.addWindowListener(new WindowAdapter() {
+        			public void windowClosing(WindowEvent e) {
+        					System.exit(0);
+        			}
+        		});
+            }
+        });
+    }
+
+    /**
+    * @param args the command line arguments
+    */
+    public static void main(String args[]) {
+    	createAndShowGUI();
+    }
+    
+
+    
+    
 
 
-    // Variables declaration - do not modify
-    private javax.swing.JPanel Logo;
+    // Variables declaration - do not modify                     
+    private javax.swing.JPanel logo;
+    private javax.swing.JLabel logoIcon;
     private javax.swing.JTextField alreadyNum;
     private javax.swing.JLabel alreadyNumLabel;
     private javax.swing.JTextField correctNum;
@@ -292,18 +265,14 @@ public class Data_small extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel pieGraph1;
-    private javax.swing.JPanel pieGraph2;
-    private javax.swing.JPanel piePanel1;
-    private javax.swing.JPanel piePanel2;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField totalNum;
     private javax.swing.JLabel totalNumLabel;
     private javax.swing.JTextField wordlistName;
     private javax.swing.JLabel wordlistNameLabel;
     private javax.swing.JTextField wrongNum;
-    private javax.swing.JTextField wrongNum1;
+    private javax.swing.JTextField correctRate;
     private javax.swing.JLabel wrongNumLabel;
-    // End of variables declaration
+    // End of variables declaration                   
 
 }
-

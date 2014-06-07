@@ -1,5 +1,7 @@
 package graph;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Font;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -7,10 +9,14 @@ import java.text.NumberFormat;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
+import org.jfree.chart.labels.StandardPieToolTipGenerator;
 import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.PiePlot3D;
+import org.jfree.chart.title.TextTitle;
 import org.jfree.data.general.DefaultPieDataset;
 
 public class PieChart {
@@ -19,11 +25,11 @@ public class PieChart {
 	
 	/**
 	 * type=1为正确率, num1 = correctNumber, num2 = wrongNumber
-	 * type=2为总统计
+	 * type=2为总统计, num1 = alreadyNumber, num2 = totalNumber - alreadyNumber
 	 * @param type
 	 */
 	public PieChart(int type, int num1, int num2){
-		  DefaultPieDataset data = null;
+		  DefaultPieDataset data;
 	      JFreeChart chart = null;
 	      
 	      if(type == 1){
@@ -36,25 +42,43 @@ public class PieChart {
 	      }
 	      
 	      
-	    //设置百分比
-	      PiePlot pieplot = (PiePlot) chart.getPlot();
-	      DecimalFormat df = new DecimalFormat("0.00%");//获得一个DecimalFormat对象，主要是设置小数问题
-	      NumberFormat nf = NumberFormat.getNumberInstance();//获得一个NumberFormat对象
-	      StandardPieSectionLabelGenerator sp1 = new StandardPieSectionLabelGenerator("{0}  {2}", nf, df);//获得StandardPieSectionLabelGenerator对象
-	      pieplot.setLabelGenerator(sp1);//设置饼图显示百分比
-	  
-	  //没有数据的时候显示的内容
-	      pieplot.setNoDataMessage("无数据显示");
-	      pieplot.setCircular(false);
-	      pieplot.setLabelGap(0.02D);
-	  
-	      pieplot.setIgnoreNullValues(true);//设置不显示空值
-	      pieplot.setIgnoreZeroValues(true);//设置不显示负值
-	     frame1=new ChartPanel (chart,true);
-	      chart.getTitle().setFont(new Font("微软雅黑",Font.BOLD,20));//设置标题字体
-	      PiePlot piePlot= (PiePlot) chart.getPlot();//获取图表区域对象
-	      piePlot.setLabelFont(new Font("微软雅黑",Font.BOLD,10));//解决乱码
-	      chart.getLegend().setItemFont(new Font("微软雅黑",Font.BOLD,10));
+
+	        // 图片背景色  
+	        chart.setBackgroundPaint(Color.white);  
+	        // 设置标题文字  
+	        frame1 = new ChartPanel(chart, true);  
+	        // 取得饼图plot对象  
+	        // PiePlot plot = (PiePlot) chart.getPlot();  
+	        // 取得3D饼图对象  
+	        PiePlot3D plot = (PiePlot3D) chart.getPlot(); 
+	        // 图形边框颜色  
+	        plot.setBaseSectionOutlinePaint(Color.RED);  
+	        // plot.setBaseSectionPaint(Color.WHITE);  
+	        // 图形边框粗细  
+	        plot.setBaseSectionOutlineStroke(new BasicStroke(1.0f));  
+	 
+	        // 指定图片的透明度(0.0-1.0)  
+	        plot.setForegroundAlpha(0.65f);  
+	        // 指定显示的饼图上圆形(false)还椭圆形(true)  
+	        plot.setCircular(true);  
+	 
+	        // 设置第一个 饼块section 的开始位置，默认是12点钟方向  
+	        plot.setStartAngle(360);  
+	        // 设置鼠标悬停提示  
+	        plot.setToolTipGenerator(new StandardPieToolTipGenerator());  
+	 
+	        // 设置突出显示的数据块  
+	        plot.setExplodePercent("One", 0.1D);  
+	        // 设置饼图各部分标签字体  
+	        plot.setLabelFont(new Font("宋体", Font.ITALIC, 15));  
+	        // 设置分饼颜色  
+	        plot.setSectionPaint(0, new Color(244, 194, 144));  
+	        // plot.setSectionPaint("2", new Color(144, 233, 144));  
+	        // 设置图例说明Legend上的文字  
+	        chart.getLegend().setItemFont(new Font("宋体", Font.PLAIN, 20));  
+	        // 定义字体格式  
+	        Font font = new java.awt.Font("黑体", java.awt.Font.CENTER_BASELINE,50); 
+	 
 	}
 	
     private static DefaultPieDataset getDataSetByCorrect(int correctNum, int wrongNum) {
@@ -69,6 +93,15 @@ public class PieChart {
         dataset.setValue("总单词数",totalNum);
         return dataset;
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public ChartPanel getChartPanel(){
     	return frame1;
     	
