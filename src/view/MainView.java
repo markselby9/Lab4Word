@@ -24,6 +24,7 @@ import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 
 import model.Word;
 import controller.WordController;
@@ -36,12 +37,19 @@ import controller.WordController;
  */
 @SuppressWarnings("serial")
 public class MainView extends JFrame implements KeyListener, ActionListener {
+	//JTextArea output;
+	//JScrollPane scrollPane;
 	JPanel contentPane = new JPanel(new BorderLayout());
 	
 	String wordPath = "./wordlist/word.txt";
 	String recordPath = "./record/record.dat";
 
+	//JMenuItem chooseItem = new JMenuItem("选择词库");
+	//JMenuItem startwordItem = new JMenuItem("从头开始背！");
+	//JMenuItem continueItem = new JMenuItem("从上次停止的地方继续！");
+	//JMenuItem selectItem = new JMenuItem("自己选择从哪里开始背！");
 	JMenuItem recordItem = new JMenuItem("查看词库统计信息");
+	//JMenuItem allrecordItem = new JMenuItem("查看历史背单词记录");
 	JMenuItem helpItem = new JMenuItem("帮助");
 	JMenuItem AboutItem = new JMenuItem("Lab作者信息");
 
@@ -58,11 +66,13 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
     private javax.swing.JPanel logo=new JPanel();
     private javax.swing.JComboBox type=new JComboBox();
     private javax.swing.JComboBox range=new JComboBox();
+    private javax.swing.JLabel filename=new JLabel();
 	//
 	
     // Variables declaration - do not modify
     private JTextField Chi=new JTextField();
     private JLabel ChiLabel=new JLabel();
+    private JLabel logoIcon = new JLabel();
     private JTextField Eng=new JTextField();
     private JLabel EngLabel=new JLabel();;
     private JButton NOTOK=new JButton();
@@ -95,6 +105,26 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		menu.getAccessibleContext().setAccessibleDescription("System menu");
 		menuBar.add(menu);
 
+		// 开始菜单项
+		// ImageIcon icon = createImageIcon("/images/start.jpg");
+		//chooseItem.setMnemonic(KeyEvent.VK_D);
+		//chooseItem.addActionListener(this);
+		//menu.add(chooseItem);
+		/*
+		startwordItem.setMnemonic(KeyEvent.VK_D);
+		startwordItem.addActionListener(this);
+		menu.add(startwordItem);
+
+		continueItem.setMnemonic(KeyEvent.VK_D);
+		continueItem.addActionListener(this);
+		menu.add(continueItem);
+		
+		selectItem.setMnemonic(KeyEvent.VK_D);
+		selectItem.addActionListener(this);
+		menu.add(selectItem);
+		
+		menu.addSeparator();
+		*/
 		recordItem.setMnemonic(KeyEvent.VK_D);
 		recordItem.addActionListener(this);
 		menu.add(recordItem);
@@ -110,6 +140,14 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 
 		AboutItem.addActionListener(this);
 		menu.add(AboutItem);
+
+		/*
+		if (wordController == null) {
+			startwordItem.setEnabled(false);
+			continueItem.setEnabled(false);
+			selectItem.setEnabled(false);
+			recordItem.setEnabled(false);
+		}*/
 
 		return menuBar;
 	}
@@ -154,36 +192,19 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			wrongnum=0;
 			int index=type.getSelectedIndex();
 			if(index == 0){
-				start=wordController.getStartInLexicon(range.getSelectedItem().toString());
-				if(start==-1){
-					JOptionPane.showMessageDialog(this, "您选择的文件中没有该词库", "出错啦",
-							JOptionPane.WARNING_MESSAGE);
-					return;
-				}
-				//start=0;
+				start=0;
 			} else if (index == 1) {
-				start=wordController.getLasttoInLexicon(range.getSelectedItem().toString());
-				if(start==-1)
-					start=wordController.getStartInLexicon(range.getSelectedItem().toString());
-				if(start==wordController.getLastInLexicon(range.getSelectedItem().toString())){
-					start=wordController.getStartInLexicon(range.getSelectedItem().toString());//上次背到最后，重新开始背
-					if(start==-1){
-						JOptionPane.showMessageDialog(this, "您选择的文件中没有该词库", "出错啦",
-								JOptionPane.WARNING_MESSAGE);
-						return;
-					}
-				}
-				else{
-					start++;//从没背过该词库，从头开始
-				}
-					//afterselectword();
+				start=wordController.getLastto()+1;
+				if(start==wordController.getAllCount())
+					start=0;//上次背到最后，重新开始背
+				//afterselectword();
 			} //else if (index == 2) {//自己选从哪里背
 				// TODO
 				//selectWord();
 			//}
 			String input = Number.getText();
 			if (input.equals("")) {
-				JOptionPane.showMessageDialog(this, "您忘记输入背诵单词数了吧。。。", "出错啦",
+				JOptionPane.showMessageDialog(this, "您忘记背诵单词数了吧。。。", "出错啦",
 						JOptionPane.WARNING_MESSAGE);
 				return;
 			}
@@ -243,24 +264,34 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			contentPane.removeAll();
 			createContentPane();
 		} else if(e.getSource() == selectworddone){
-			if(inputfield.getText().toUpperCase().charAt(0)!=range.getSelectedItem().toString().toUpperCase().charAt(0)){
+			int tmp=wordController.getIDByWord(inputfield.getText());
+			if(tmp==-1){
 				JOptionPane.showMessageDialog(this,"词库中没有您输入的单词，将默认从第一个单词开始", "出错啦",
 						JOptionPane.WARNING_MESSAGE);
-				start=wordController.getStartInLexicon(range.getSelectedItem().toString());
+				start=0;
 			}
-			else{
-				int tmp=wordController.getIDByWord(inputfield.getText());
-				if(tmp==-1){
-					JOptionPane.showMessageDialog(this,"词库中没有您输入的单词，将默认从第一个单词开始", "出错啦",
-							JOptionPane.WARNING_MESSAGE);
-					start=wordController.getStartInLexicon(range.getSelectedItem().toString());
-				}
-				else
-					start=tmp;
-			}
+			else
+				start=tmp;
 			selectwordframe.dispose();
 			//afterselectword();
-		}
+		} /*else{
+			start=0;
+			wordnum=0;
+			rightnum=0;
+			wrongnum=0;
+			if (e.getSource() == startwordItem) {
+				afterselectword();
+			} else if (e.getSource() == continueItem) {
+				// TODO
+				start=wordController.getLastto()+1;
+				if(start==wordController.getAllCount())
+					start=0;//上次背到最后，重新开始背
+				afterselectword();
+			} else if (e.getSource() == selectItem) {
+				// TODO
+				selectWord();
+			}
+		}*/
 	}
 
 	public void chooseFile() {
@@ -276,6 +307,9 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			begin.setEnabled(true);
 			type.setEnabled(true);
 			Number.setEnabled(true);
+			//startwordItem.setEnabled(true);
+			//continueItem.setEnabled(true);
+			//selectItem.setEnabled(true);
 			recordItem.setEnabled(true);
 			// TODO
 		} else {
@@ -317,14 +351,9 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	}*/
 	
 	public void afterselectword(){
-		int valid=wordController.isValid(start, wordnum, range.getSelectedItem().toString());
+		int valid=wordController.isValid(start, wordnum);
 		if (valid==-1) {
 			JOptionPane.showMessageDialog(this, "您输入的单词数太坑爹，臣妾办不到啊。。。", "出错啦",
-					JOptionPane.WARNING_MESSAGE);
-			return;
-		}
-		else if(valid==-2){
-			JOptionPane.showMessageDialog(this, "您输入的单词不在词库内，臣妾办不到啊。。。", "出错啦",
 					JOptionPane.WARNING_MESSAGE);
 			return;
 		}
@@ -343,6 +372,15 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	public void recitationview(int startint, int duration) {
 		//wordController.startReciting(startint, duration);
 		contentPane.removeAll();
+		/*contentPane.setLayout(new GridLayout(2,2));
+		contentPane.add(wordtofill);
+		contentPane.add(wordmeaning);
+		ok.removeActionListener(this);
+		ok.addActionListener(this);
+		contentPane.add(ok);
+		//contentPane.removeAll();
+		contentPane.revalidate();
+		*/
 
         Chi.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         Chi.setText("中文释义");
@@ -441,19 +479,39 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			FileChooser.setText("重新选择词库");
 		}
 		
+		contentPane.setBackground(Color.white);
+		
+		
 		javax.swing.GroupLayout logoLayout = new javax.swing.GroupLayout(logo);
         logo.setLayout(logoLayout);
+        logo.setBackground(Color.white);
+
+        ImageIcon logoPNG = new ImageIcon("./images/logo.png");
+        logoIcon.setIcon(logoPNG);
         logoLayout.setHorizontalGroup(
             logoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(logoIcon)
             .addGap(0, 177, Short.MAX_VALUE)
         );
         logoLayout.setVerticalGroup(
             logoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(logoIcon)
             .addGap(0, 89, Short.MAX_VALUE)
         );
 
-        begin.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
-        begin.setText("开始背单词");
+        ImageIcon startButton = new ImageIcon("./images/start_button2.png");
+        begin.setIcon(startButton);
+        begin.setDisabledIcon(startButton);
+        begin.setBorder(null);
+        
+        ImageIcon statsButton = new ImageIcon("./images/data.png");
+        stats.setIcon(statsButton);
+        stats.setDisabledIcon(statsButton);
+        stats.setBorder(null);
+
+        //stats.setBorder(null);
+        //stats.setIcon(new ImageIcon("./images/data.png"));
+        //stats.setDisabledIcon(new ImageIcon("./images/data.png"));
 
         type.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         type.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "重新开始", "上次结束单词开始", "选定单词开始" }));
@@ -474,7 +532,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         jLabel3.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         jLabel3.setText("单词数");
 
-        stats.setText("统计");
 
         jLabel4.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         jLabel4.setText("词库");
@@ -482,59 +539,67 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         range.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         range.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" }));
 
-
+        filename.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
+        filename.setText("filename");
+        
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
+        jPanel2.setBackground(Color.white);
         jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(96, 96, 96)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(begin, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
-                        .addComponent(stats, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(Number, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(96, 96, 96)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                            .addGap(18, 18, 18)
+                            .addComponent(begin, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(31, 31, 31)
+                            .addComponent(stats, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                            .addGap(6, 6, 6)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel1)
                                 .addComponent(jLabel4)
-                                .addGap(18, 18, 18)
-                                .addComponent(range, 0, 88, Short.MAX_VALUE))
-                            .addComponent(FileChooser, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
-                            .addComponent(type, 0, 242, Short.MAX_VALUE))))
-                .addGap(0, 0, 0))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(FileChooser)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Number, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(range, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(34, 34, 34)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(stats, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(begin, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE))
-                .addContainerGap())
-        );
+                                .addComponent(jLabel2))
+                            .addGap(18, 18, 18)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(type, 0, 244, Short.MAX_VALUE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(FileChooser, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                            .addComponent(range, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                                            .addComponent(jLabel3)))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(filename)
+                                        .addComponent(Number, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                    .addGap(0, 0, 0))
+            );
+            jPanel2Layout.setVerticalGroup(
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(FileChooser)
+                        .addComponent(jLabel2)
+                        .addComponent(filename))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(range, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3)
+                        .addComponent(Number, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(begin, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(stats, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)))
+            );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(contentPane);
         contentPane.setLayout(layout);
@@ -613,11 +678,11 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		Dimension screenSize = kit.getScreenSize(); // 获取屏幕的尺寸
 		int screenWidth = screenSize.width / 2; // 获取屏幕的宽
 		int screenHeight = screenSize.height / 2; // 获取屏幕的高
-		int height = 650;
-		int width = 650;
+		int height = 420;
+		int width = 400;
 		frame.setLocation(screenWidth - width / 2, screenHeight - height / 2);
 		// Display the window.
-		frame.setSize(height, width);
+		frame.setSize(width, height);
 		frame.setVisible(true);
 		
 	}
@@ -641,7 +706,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		if(e.getSource()==inputfield){
 			int caretPosition = inputfield.getCaretPosition();
 			String input=inputfield.getText();
-			ArrayList<String> items=wordController.getSimilarWords(input,range.getSelectedItem().toString());
+			ArrayList<String> items=wordController.getSimilarWords(input);
 			cmb.setMaximumRowCount(11);
 			cmb.hidePopup();
 			cmb.removeAllItems();
@@ -656,4 +721,49 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		}
 	}
 
+	class comboboxtest extends JFrame {
+
+		JComboBox cmb = new JComboBox();
+		JTextField inputfield=(JTextField)cmb.getEditor().getEditorComponent();
+		
+		public comboboxtest(){
+		   	cmb.setEditable(true);
+		   	//cmb.setPopupVisible(true);
+		   	inputfield.addKeyListener(new autocompleter());
+		   	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		   	this.getContentPane().setLayout(new GridLayout(1,2));
+		    this.getContentPane().add(cmb);
+		    this.getContentPane().add(selectworddone);
+		    this.setSize(400,80);
+		    this.setVisible(true);
+		}
+		
+		
+		class autocompleter implements KeyListener {
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				ArrayList<String> items=wordController.getSimilarWords(inputfield.getText());
+				cmb.removeAllItems();
+				for(int i=0;i<items.size();i++){
+					cmb.addItem(items.get(i));
+				}
+				cmb.showPopup();
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		}
+	}
 }

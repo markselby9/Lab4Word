@@ -26,7 +26,7 @@ import model.Word;
 public class RecordController {
 	String recordfilepathString = "./record/record.dat";
 	File file;
-	int [] lastto;
+	int lastto;
 	
 	public RecordController(){
 		file = new File(recordfilepathString);
@@ -37,13 +37,11 @@ public class RecordController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		lastto=new int[26];
-		for(int i=0;i<26;i++)
-			lastto[i]=-1;
+		lastto=-1;
 	}
 	
 	//根据已背单词的Arraylist进行保存，在文件里添加一个Record
-	public boolean saveRecord(HashMap<Integer,Integer> recordmap, int [] lastto){
+	public boolean saveRecord(HashMap<Integer,Integer> recordmap, int lastto){
 		//TODO
 		System.out.println("Save record");
 		OutputStreamWriter osr = null;
@@ -55,10 +53,7 @@ public class RecordController {
 		}
 		BufferedWriter bwr = new BufferedWriter(osr);
 		try {
-			for(int i=0;i<lastto.length;i++){
-				if(lastto[i]>=0)
-					bwr.write("lastto:"+(char)(65+i)+":"+lastto[i]);
-			}
+			bwr.write("last_to:"+lastto);
 			Iterator<Integer> ite=recordmap.keySet().iterator();
 			while(ite.hasNext()){
 				int tmp=ite.next();
@@ -74,9 +69,26 @@ public class RecordController {
 			return false;
 		}
 		return true;
+		/*Record record = new Record();
+		record.setID(openRecord().size()+1);
+		record.setListname(listname);
+		record.setTime(saveTime());
+		record.setStartword(currentwordlist.get(0).getWord());
+		record.setEndword(currentwordlist.get(currentwordlist.size()-1).getWord());
+		
+		try {
+			FileOutputStream fos = new FileOutputStream(recordfilepathString);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(currentwordlist);
+			oos.close();
+			fos.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
 	}
 	
-	//此处应当是读出有很多Record的Arraylist
+	//此处应当是读出有很多Record的Arraylist	
 	@SuppressWarnings({ "resource", "unchecked" })
 	public HashMap<Integer,Integer> openRecord(){
 		//int id = 0;
@@ -90,18 +102,16 @@ public class RecordController {
 		String line = null;
 		HashMap<Integer,Integer> recordmap=new HashMap<Integer,Integer>();
 		try {
-			String [] lasttos;
 			line = br.readLine();
 			while (line != null) {
 				System.out.println(line);
-				if(line.startsWith("lastto:")){
-					lasttos=line.split(":");
-					lastto[lasttos[1].toUpperCase().charAt(0)-65]=Integer.parseInt(lasttos[2]);
+				if(line.startsWith("last_to:")){
+					this.lastto=Integer.parseInt(line.substring(8));
 				}
 				else{
 					String[] arr = line.split(" ");
 					//Word word = new Word(id, arr[0], arr[arr.length - 1]);
-					if((!arr[0].equals(""))&&arr.length>1)
+					if(!arr[0].equals(""))
 						recordmap.put(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]));
 				}
 				line = br.readLine();
@@ -112,6 +122,25 @@ public class RecordController {
 		System.out.println("LOADED " + recordmap.size() + " RECORDS");
 		
 		return recordmap;
+		/*ObjectInputStream ois;
+		ArrayList<Record> recordlist=null;
+		try {
+			FileInputStream fis = new FileInputStream(recordfilepathString);
+			ois = new ObjectInputStream(fis);
+			Object obj = ois.readObject();
+			recordlist = (ArrayList<Record>) obj;
+			ois.close();
+			fis.close();
+		} catch (IOException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (recordlist==null){
+			recordlist = new ArrayList<Record>();
+			System.out.println("create a new recordlist");
+		}
+		return recordlist;
+		*/
 	}
 	
 	/*public String saveTime(){
