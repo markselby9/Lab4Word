@@ -20,11 +20,13 @@ import model.Word;
 public class WordController {
 	String filePath;
 	String listname;
-	int allcount, recordplace, lastto;
+	int allcount, recordplace;
+	int [] lastto;
 	ArrayList<Word> wordlist;
 	//ArrayList<Word> currentwordlist;
 	HashMap<Integer,Integer> newrecordmap;
 	HashMap<Integer,Integer> recordmap;
+	HashMap<Integer,String> startmap;
 	//ArrayList<Record> recordlist;
 	
 	RecordController recordController;
@@ -33,6 +35,7 @@ public class WordController {
 		this.filePath = filepath;
 		this.wordlist = new ArrayList<Word>();
 		this.recordController = new RecordController();
+		startmap=new HashMap<Integer,String>();
 		loadwordlist();
 		loadrecord();
 		newrecordmap=new HashMap<Integer,Integer>();
@@ -44,12 +47,13 @@ public class WordController {
 		//this.recordlist = recordController.openRecord();
 	}
 	
-	public int getLastto(){
-		return lastto;
+	public int getLasttoInLexicon(String start){
+		return lastto[start.toUpperCase().charAt(0)-65];
 	}
 
 	// load words from file into a arraylist
 	public void loadwordlist() {
+		//startmap=new HashMap<Integer,String>();
 		int id = 0;
 		InputStreamReader isr = null;
 		try {
@@ -63,9 +67,10 @@ public class WordController {
 			line = br.readLine();
 			while (line != null) {
 				String[] arr = line.split(" ");
-				Word word = new Word(id, arr[0], arr[arr.length - 1],arr[0].substring(0, 1));
+				Word word = new Word(id, arr[0], arr[arr.length - 1],arr[0].substring(0, 1).toUpperCase());
 				id++;
 				this.wordlist.add(word);
+				startmap.put(word.getID(), word.getStart());
 				line = br.readLine();
 			}
 		} catch (IOException e) {
@@ -91,8 +96,38 @@ public class WordController {
 		//return this.wordlist.get(id);
 	}
 	
-	public ArrayList<String> getSimilarWords(String word){
+	public int getStartInLexicon(String start){
+		Word tmp=null;
+		for(int i=0;i<wordlist.size();i++){
+			tmp=wordlist.get(i);
+			if(tmp.getStart().toUpperCase().equals(start.toUpperCase()))
+				return tmp.getID();
+		}
+		return -1;
+	}
+	
+	public int getLastInLexicon(String start){
+		int last=-1;
+		boolean find=false;
+		Word tmp=null;
+		for(int i=0;i<wordlist.size();i++){
+			tmp=wordlist.get(i);
+			if(tmp.getStart().toUpperCase().equals(start.toUpperCase())){
+				last=tmp.getID();
+				find=true;
+			}
+			else{
+				if(find)
+					break;
+			}
+		}
+		return last;
+	}
+	
+	public ArrayList<String> getSimilarWords(String word, String start){
 		ArrayList<String> words=new ArrayList<String>();
+		if(!word.toUpperCase().startsWith(start.toUpperCase()))
+			return words;
 		String tmp="";
 		for(int i=0;i<wordlist.size();i++){
 			tmp=wordlist.get(i).getWord();
@@ -145,18 +180,24 @@ public class WordController {
 		return true;
 	}
 	
-	public int isValid(int start, int num){
-		if (start <0 || num<0 || start>getAllCount()){
+	public int isValid(int start, int num, String lexicon){
+		int lastinlexicon=getLastInLexicon(lexicon.toUpperCase());
+		if (start <0 || num < 0 ){
 			return -1;
 		}
-		else if ((start+num)>getAllCount()){
-			return getAllCount()-start;
+		else if(start > lastinlexicon){
+			return -2;
+		}
+		else if ((start+num)>lastinlexicon+1){
+			return lastinlexicon-start+1;
 		}
 		else
 			return 0;
 	}
 	
 	public void addRecord(int id, int pass){
+		String start=startmap.get(id);
+		lastto[start.toUpperCase().charAt(0)-65]=id;
 		newrecordmap.put(id, pass); 
 	}
 	
@@ -164,11 +205,11 @@ public class WordController {
 	public boolean mergerecord(){
 		Set<Integer> keys=newrecordmap.keySet();
 		Iterator<Integer> ite=keys.iterator();
-		if(keys.size()>0)
-			lastto=0;
+		//if(keys.size()>0)
+			//lastto=0;
 		while(ite.hasNext()){
 			int tmp=ite.next();
-			lastto=Math.max(lastto, tmp);
+			//lastto=Math.max(lastto, tmp);
 			if(recordmap.containsKey(tmp)){
 				if(recordmap.get(tmp)==0&&newrecordmap.get(tmp)==1)
 					recordmap.put(tmp, 1);

@@ -85,7 +85,7 @@ public class Data_small extends javax.swing.JFrame {
         totalNum.setText("totalNumber");
 
         alreadyNumLabel.setFont(new java.awt.Font("微软雅黑", 0, 12));
-        alreadyNumLabel.setText("已背单词数");
+        alreadyNumLabel.setText("本次背单词数");
 
         alreadyNum.setText("alreadyNumber");
 

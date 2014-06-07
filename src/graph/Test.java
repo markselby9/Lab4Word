@@ -24,6 +24,8 @@ public class Test {
 	    frame.add(new BarChart(array,1).getChartPanel());           //添加柱形图  
 	    //frame.add(new PieChart(array,1).getChartPanel());           //添加饼状图  
 	    frame.setBounds(50, 50, 800, 600);  
-	    frame.setVisible(true);  
+	    frame.setVisible(true);
+		//String str="Z";
+		//System.out.println((char)(65+25));
 	}  
 }
