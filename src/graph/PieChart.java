@@ -46,13 +46,13 @@ public class PieChart {
 	        // 图片背景色  
 	        chart.setBackgroundPaint(Color.white);  
 	        // 设置标题文字  
-	        frame1 = new ChartPanel(chart, true);  
+	        frame1 = new ChartPanel(chart, true); 
 	        // 取得饼图plot对象  
 	        // PiePlot plot = (PiePlot) chart.getPlot();  
 	        // 取得3D饼图对象  
 	        PiePlot3D plot = (PiePlot3D) chart.getPlot(); 
 	        // 图形边框颜色  
-	        plot.setBaseSectionOutlinePaint(Color.RED);  
+	        plot.setBaseSectionOutlinePaint(Color.black); 
 	        // plot.setBaseSectionPaint(Color.WHITE);  
 	        // 图形边框粗细  
 	        plot.setBaseSectionOutlineStroke(new BasicStroke(1.0f));  
@@ -70,33 +70,31 @@ public class PieChart {
 	        // 设置突出显示的数据块  
 	        plot.setExplodePercent("One", 0.1D);  
 	        // 设置饼图各部分标签字体  
-	        plot.setLabelFont(new Font("宋体", Font.ITALIC, 15));  
+	        plot.setLabelFont(new Font("微软雅黑", Font.ITALIC, 20));  
 	        // 设置分饼颜色  
 	        plot.setSectionPaint(0, new Color(244, 194, 144));  
 	        // plot.setSectionPaint("2", new Color(144, 233, 144));  
 	        // 设置图例说明Legend上的文字  
-	        chart.getLegend().setItemFont(new Font("宋体", Font.PLAIN, 20));  
+	        chart.getLegend().setItemFont(new Font("微软雅黑", Font.PLAIN, 22));  
 	        // 定义字体格式  
-	        Font font = new java.awt.Font("黑体", java.awt.Font.CENTER_BASELINE,50); 
-	 
+	        Font font = new java.awt.Font("微软雅黑", java.awt.Font.CENTER_BASELINE,50);
+	        
+	        chart.setTitle("");
 	}
 	
     private static DefaultPieDataset getDataSetByCorrect(int correctNum, int wrongNum) {
         DefaultPieDataset dataset = new DefaultPieDataset();
-        dataset.setValue("正确",correctNum);
-        dataset.setValue("错误",wrongNum);
+        dataset.setValue("正确 "+correctNum,correctNum);
+        dataset.setValue("错误 "+wrongNum,wrongNum);
         return dataset;
     }
+    
     private static DefaultPieDataset getDataSetByAlready(int alreadyNum, int totalNum) {
         DefaultPieDataset dataset = new DefaultPieDataset();
         dataset.setValue("已背单词数",alreadyNum);
         dataset.setValue("总单词数",totalNum);
         return dataset;
     }
-    
-    
-    
-    
     
     
     

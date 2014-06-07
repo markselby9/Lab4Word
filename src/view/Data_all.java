@@ -1,13 +1,21 @@
 package view;
 
+import graph.BarChart;
+import graph.PieChart;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+
+import model.Lexicon;
+
+import org.jfree.chart.ChartPanel;
 
 /*
  * To change this template, choose Tools | Templates
@@ -61,26 +69,47 @@ public class Data_all extends javax.swing.JFrame {
         wordlistNameLabel = new javax.swing.JLabel();
         piePanel = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        pieChart1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        pieChart2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        pieChart3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        pieChart4 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         pieGraph2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        barChart1 = new javax.swing.JPanel();
-        barChart2 = new javax.swing.JPanel();
         logo = new javax.swing.JPanel();
         logoIcon = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
+        
+        
+        
+        //当前词库正确率
+    	pieChart1 = addPieChart(1, pre_correct, pre_already - pre_correct);
+        pieChart1.setPreferredSize(new Dimension(140, 120));
+    	
+    	//所有词库正确率
+    	pieChart2 = addPieChart(1, all_correct, all_already - all_correct);
+    	pieChart2.setPreferredSize(new Dimension(140, 120));
+    	
+    	//当前词库已背单词比例
+    	pieChart3 = addPieChart(2, pre_already, pre_total - pre_already);
+    	pieChart3.setPreferredSize(new Dimension(140, 120));
+    	
+    	//所有词库已背单词比例
+    	pieChart4 = addPieChart(2, all_already, all_total - all_already);
+    	pieChart4.setPreferredSize(new Dimension(140, 120));
+    	
+    	//正确率比例
+    	barChart1 = addBarChart(lexiconList,1);
+    	barChart1.setPreferredSize(new Dimension(300, 200));
+    	
+    	//总单词比例
+    	barChart2 = addBarChart(lexiconList,2);
+    	barChart2.setPreferredSize(new Dimension(300, 200));
+        
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
@@ -502,6 +531,10 @@ public class Data_all extends javax.swing.JFrame {
         );
 
         pack();
+        
+        
+        
+        
     }// </editor-fold>
 
     private void correctRateActionPerformed(java.awt.event.ActionEvent evt) {                                          
@@ -518,18 +551,27 @@ public class Data_all extends javax.swing.JFrame {
 	 * type=2为总统计, num1 = alreadyNumber, num2 = totalNumber - alreadyNumber
 	 * @param type
 	 */
-    public void addPieChart(int type, int num1, int num2){
-    	
+    public static ChartPanel addPieChart(int type, int num1, int num2){
+    	PieChart pieChart = new PieChart( type,  num1,  num2);
+    	return pieChart.getChartPanel();
     }
     
     
+    /**这个用于得到总柱状图
+	 * type=1为全部词库中已背单词数量
+	 * type=2为正确率
+	*/
+    
+    public static ChartPanel addBarChart(ArrayList<Lexicon> lexiconList, int type){
+    	BarChart barChart = new BarChart(lexiconList,type);
+    	return barChart.getChartPanel();
+    }
     
     
 
     public static void createAndShowGUI(){
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-            	
         		// 使窗口居中
         		Toolkit kit = Toolkit.getDefaultToolkit(); // 定义工具包
         		Dimension screenSize = kit.getScreenSize(); // 获取屏幕的尺寸
@@ -552,22 +594,120 @@ public class Data_all extends javax.swing.JFrame {
         					System.exit(0);
         			}
         		});
+        		
+
             }
         });
+        
+        
     }
-
+    
     /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
+     * 
+     * @param pre_total
+     * @param pre_already
+     * @param pre_correct
+     * @param all_total
+     * @param all_already
+     * @param all_correct
+     * @param lexiconList
+     */
+    public void initiateChart(int pre_total,int pre_already,int pre_correct,int all_total,int all_already,int all_correct
+    		,ArrayList<Lexicon> lexiconList){
+    	this.setPre_total(pre_total);
+    	this.setPre_already(pre_already);
+    	this.setPre_correct(pre_correct);
+    	this.setAll_total(all_total);
+    	this.setAll_already(all_already);
+    	this.setAll_correct(all_correct);
+    	this.setLexiconList(lexiconList);
+    	
+    	this.setPre_correctRate(pre_correct/pre_already);
+    	this.setAll_correctRate(all_correct/all_already);
+    	
     	createAndShowGUI();
+    	
     }
+    
 
-    // Variables declaration - do not modify
+
+
+    public String getWordlistName() {
+		return wordlistName;
+	}
+	public void setWordlistName(String wordlistName) {
+		this.wordlistName = wordlistName;
+	}
+
+
+	public double getPre_correctRate() {
+		return pre_correctRate;
+	}
+	public void setPre_correctRate(double pre_correctRate) {
+		this.pre_correctRate = pre_correctRate;
+	}
+
+	public double getAll_correctRate() {
+		return all_correctRate;
+	}
+	public void setAll_correctRate(double all_correctRate) {
+		this.all_correctRate = all_correctRate;
+	}
+
+	public int getPre_total() {
+		return pre_total;
+	}
+	public void setPre_total(int pre_total) {
+		this.pre_total = pre_total;
+	}
+
+	public int getPre_already() {
+		return pre_already;
+	}
+	public void setPre_already(int pre_already) {
+		this.pre_already = pre_already;
+	}
+
+	public int getPre_correct() {
+		return pre_correct;
+	}
+	public void setPre_correct(int pre_correct) {
+		this.pre_correct = pre_correct;
+	}
+
+	public int getAll_total() {
+		return all_total;
+	}
+	public void setAll_total(int all_total) {
+		this.all_total = all_total;
+	}
+
+	public int getAll_already() {
+		return all_already;
+	}
+	public void setAll_already(int all_already) {
+		this.all_already = all_already;
+	}
+
+	public int getAll_correct() {
+		return all_correct;
+	}
+	public void setAll_correct(int all_correct) {
+		this.all_correct = all_correct;
+	}
+
+	public ArrayList<Lexicon> getLexiconList() {
+		return lexiconList;
+	}
+	public void setLexiconList(ArrayList<Lexicon> lexiconList) {
+		this.lexiconList = lexiconList;
+	}
+
+	// Variables declaration - do not modify
     private javax.swing.JTextField alreadyNum;
     private javax.swing.JLabel alreadyNumLabel;
-    private javax.swing.JPanel barChart1;
-    private javax.swing.JPanel barChart2;
+    private ChartPanel barChart1;
+    private ChartPanel barChart2;
     private javax.swing.JPanel barPanel;
     private javax.swing.JTextField correctNum;
     private javax.swing.JLabel correctNumLabel;
@@ -588,10 +728,10 @@ public class Data_all extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel logo;
     private javax.swing.JLabel logoIcon;
-    private javax.swing.JPanel pieChart1;
-    private javax.swing.JPanel pieChart2;
-    private javax.swing.JPanel pieChart3;
-    private javax.swing.JPanel pieChart4;
+    private ChartPanel pieChart1;
+    private ChartPanel pieChart2;
+    private ChartPanel pieChart3;
+    private ChartPanel pieChart4;
     private javax.swing.JPanel pieGraph2;
     private javax.swing.JPanel piePanel;
     private javax.swing.JTextField totalNum;
@@ -601,5 +741,17 @@ public class Data_all extends javax.swing.JFrame {
     private javax.swing.JTextField wrongNum;
     private javax.swing.JLabel wrongNumLabel;
     // End of variables declaration
+    
+    private String wordlistName;
+    private int pre_total;
+    private int pre_already;
+    private int pre_correct;
+    private int all_total;
+    private int all_already;
+    private int all_correct;
+    private ArrayList<Lexicon> lexiconList;
+    
+    private double pre_correctRate;
+    private double all_correctRate;
 
 }
