@@ -614,7 +614,7 @@ public class Data_all extends javax.swing.JFrame {
                 dataall.setVisible(true);
                 dataall.setLocation(screenWidth - width / 2, screenHeight - height / 2);
                 dataall.setSize(width,height);
-                
+                dataall.setResizable(false);
                 
 
         		ImageIcon image = new ImageIcon("./images/icon.jpg");

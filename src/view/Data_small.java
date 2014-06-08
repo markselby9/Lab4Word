@@ -248,7 +248,7 @@ public class Data_small extends javax.swing.JFrame {
                 datasmall.setVisible(true);
                 datasmall.setLocation(screenWidth - width / 2, screenHeight - height / 2);
                 datasmall.setSize(width,height);
-                
+                datasmall.setResizable(false);
                 
 
         		ImageIcon image = new ImageIcon("./images/icon.jpg");

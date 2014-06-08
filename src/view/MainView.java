@@ -97,7 +97,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		menuBar = new JMenuBar();
 
 		// Build the first menu.
-		menu = new JMenu("开始(B)");
+		/*menu = new JMenu("开始(B)");
 		menu.setMnemonic('B');
 		menu.getAccessibleContext().setAccessibleDescription("System menu");
 		menuBar.add(menu);
@@ -105,6 +105,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		recordItem.setMnemonic(KeyEvent.VK_D);
 		recordItem.addActionListener(this);
 		menu.add(recordItem);
+		*/
 		
 		// Build second menu in the menu bar.
 		menu = new JMenu("更多(M)");
@@ -144,11 +145,10 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == FileChooser) {
 			chooseFile();
-		} else if (e.getSource() == recordItem) {
-			// TODO
-			int recordcount=wordController.getRecordCount();
-			int recordrightcount=wordController.getRecordRightCount();
-			new RecordView(wordController.getListName(),wordController.getAllCount(),recordcount,recordrightcount,recordcount-recordrightcount);
+		} else if (e.getSource() == helpItem) {
+			JOptionPane.showMessageDialog(this,
+					"使用方法：选择词汇文件后，选择词库，背诵方式和需要背诵的单词数。\n背完指定单词后，会显示统计信息。\n更详细的统计信息请点击主界面的“统计”按钮。\n如需更多帮助，请联系：markselbyfcy@163.com", "帮助",
+					JOptionPane.DEFAULT_OPTION);
 		} else if(e.getSource()==stats){
 			//int pre_total,int pre_already,int pre_correct,int all_total,int all_already,int all_correct
     		ArrayList<Lexicon> lexiconstats=wordController.getLexiconStats();
@@ -157,7 +157,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			Data_all.createAndShowGUI(pre.getLexiconName(),pre.getTotalNum(), pre.getAlreadyNum(), pre.getAlreadyNum()-pre.getWrongNum(), wordController.getAllCount(), wordController.getRecordCount(), wordController.getRecordRightCount(), lexiconstats);// TODO
 		} else if (e.getSource() == AboutItem) {
 			JOptionPane.showMessageDialog(this,
-					"SE Lab4 \n Author: fengshao,chenlu,huijie", "About",
+					"WordMater! \n作者: 沈慧捷  陈璐  冯超逸", "关于",
 					JOptionPane.DEFAULT_OPTION);
 		} else if(e.getSource() == begin){
 			//start=0;
@@ -307,6 +307,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         selectworddone.setText("确认");
         
         selectwordframe.setTitle("从指定单词开始");
+        selectwordframe.setResizable(false);
         selectwordframe.setSize(380,80);
         int w = (Toolkit.getDefaultToolkit().getScreenSize().width - selectwordframe.getWidth()) / 2;
         int h = (Toolkit.getDefaultToolkit().getScreenSize().height - selectwordframe.getHeight()) / 2;
@@ -515,7 +516,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         jLabel1.setText("方式");
 
         FileChooser.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
-        FileChooser.setText("filechooser");
+        FileChooser.setText("选择文件");
 
         jLabel3.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         jLabel3.setText("单词数");
@@ -640,6 +641,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		JFrame frame = new JFrame("WordMaster!");
 		ImageIcon image = new ImageIcon("./images/icon.jpg");
 		frame.setIconImage(image.getImage());
+		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
