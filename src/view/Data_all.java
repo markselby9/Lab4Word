@@ -39,10 +39,10 @@ public class Data_all extends javax.swing.JFrame {
     public Data_all() {
         initComponents();
     }
-    public Data_all(String title, int pre_total, int pre_already, int pre_correct, int all_total,
+    public Data_all(String wordlistName, int pre_total, int pre_already, int pre_correct, int all_total,
     		 int all_already, int all_correct , ArrayList<Lexicon> lexiconList) {
     	
-
+    	this.wordlistName = wordlistName;
     	this.pre_total = pre_total;
     	this.pre_already = pre_already;
     	this.pre_correct = pre_correct;
@@ -54,7 +54,7 @@ public class Data_all extends javax.swing.JFrame {
     	this.pre_correctRate = pre_correct/pre_already;
     	this.all_correctRate = all_correct/all_already;
     	
-    	this.setTitle(title);
+    	this.setTitle("总统计");
         initComponents();
     }
 
@@ -102,28 +102,27 @@ public class Data_all extends javax.swing.JFrame {
         
         //当前词库正确率
     	pieChart1 = addPieChart(1, pre_correct, pre_already - pre_correct);
-        pieChart1.setPreferredSize(new Dimension(140, 120));
+        pieChart1.setPreferredSize(new Dimension(200, 160));
     	
     	//所有词库正确率
     	pieChart2 = addPieChart(1, all_correct, all_already - all_correct);
-    	pieChart2.setPreferredSize(new Dimension(140, 120));
+    	pieChart2.setPreferredSize(new Dimension(200, 160));
     	
     	//当前词库已背单词比例
     	pieChart3 = addPieChart(2, pre_already, pre_total - pre_already);
-    	pieChart3.setPreferredSize(new Dimension(140, 120));
+    	pieChart3.setPreferredSize(new Dimension(200, 160));
     	
     	//所有词库已背单词比例
     	pieChart4 = addPieChart(2, all_already, all_total - all_already);
-    	pieChart4.setPreferredSize(new Dimension(140, 120));
+    	pieChart4.setPreferredSize(new Dimension(200, 160));
     	
     	//正确率比例
-    	System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~"+this.lexiconList.get(0));
-    	barChart1 = addBarChart(lexiconList,1);
-    	barChart1.setPreferredSize(new Dimension(300, 200));
+    	barChart2 = addBarChart(lexiconList,1);
+    	barChart2.setPreferredSize(new Dimension(300, 200));
     	
     	//总单词比例
-    	barChart2 = addBarChart(lexiconList,2);
-    	barChart2.setPreferredSize(new Dimension(300, 200));
+    	barChart1 = addBarChart(lexiconList,2);
+    	barChart1.setPreferredSize(new Dimension(300, 200));
         
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -131,36 +130,36 @@ public class Data_all extends javax.swing.JFrame {
         jPanel1.setBackground(Color.white);
         
         totalNumLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
-        totalNumLabel.setText("单词总数");
+        totalNumLabel.setText("当前词库单词总数");
 
-        totalNum.setText("totalNumber");
+        totalNum.setText(""+this.pre_total);
 
         alreadyNumLabel.setFont(new java.awt.Font("微软雅黑", 0, 12));
-        alreadyNumLabel.setText("已背单词数");
+        alreadyNumLabel.setText("当前词库已背单词数");
 
-        alreadyNum.setText("alreadyNumber");
+        alreadyNum.setText(""+this.pre_already);
 
         correctNumLabel.setFont(new java.awt.Font("微软雅黑", 0, 12));
-        correctNumLabel.setText("正确单词数");
+        correctNumLabel.setText("当前词库正确单词数");
 
-        correctNum.setText("correctNumber");
+        correctNum.setText(""+this.pre_correct);
 
         wrongNumLabel.setFont(new java.awt.Font("微软雅黑", 0, 12));
-        wrongNumLabel.setText("错误单词数");
+        wrongNumLabel.setText("当前词库错误单词数");
 
-        wrongNum.setText("correctNum");
+        wrongNum.setText(""+(this.pre_already-this.pre_correct));
 
         correctRateLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
-        correctRateLabel.setText("正确率");
+        correctRateLabel.setText("当前词库正确率");
 
-        correctRate.setText("correctRate");
+        correctRate.setText(""+this.pre_correctRate);
         correctRate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 correctRateActionPerformed(evt);
             }
         });
 
-        wordListName.setText("wordlistName");
+        wordListName.setText(""+this.wordlistName);
         wordListName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 wordListNameActionPerformed(evt);
@@ -168,7 +167,7 @@ public class Data_all extends javax.swing.JFrame {
         });
 
         wordlistNameLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
-        wordlistNameLabel.setText("词库名称");
+        wordlistNameLabel.setText("当前词库名称");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -584,7 +583,7 @@ public class Data_all extends javax.swing.JFrame {
     
     
 
-    public static void createAndShowGUI(final int pre_total,final int pre_already,final int pre_correct,final int all_total,
+    public static void createAndShowGUI(final String wordlistName,final int pre_total,final int pre_already,final int pre_correct,final int all_total,
     		final int all_already,final int all_correct ,final ArrayList<Lexicon> lexiconList){
     	
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -594,9 +593,9 @@ public class Data_all extends javax.swing.JFrame {
         		Dimension screenSize = kit.getScreenSize(); // 获取屏幕的尺寸
         		int screenWidth = screenSize.width / 2; // 获取屏幕的宽
         		int screenHeight = screenSize.height / 2; // 获取屏幕的高
-        		int width = 650;
+        		int width = 930;
         		int height = 600;
-                Data_all dataall = new Data_all("总统计",pre_total,pre_already, pre_correct, all_total, all_already, all_correct,lexiconList);
+                Data_all dataall = new Data_all(wordlistName,pre_total,pre_already, pre_correct, all_total, all_already, all_correct,lexiconList);
                 dataall.setVisible(true);
                 dataall.setLocation(screenWidth - width / 2, screenHeight - height / 2);
                 dataall.setSize(width,height);
@@ -605,13 +604,7 @@ public class Data_all extends javax.swing.JFrame {
 
         		ImageIcon image = new ImageIcon("./images/icon.jpg");
         		dataall.setIconImage(image.getImage());
-        		dataall.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        		dataall.addWindowListener(new WindowAdapter() {
-        			public void windowClosing(WindowEvent e) {
-        					System.exit(0);
-        			}
-        		});
-        		
+        		dataall.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
             }
         });
