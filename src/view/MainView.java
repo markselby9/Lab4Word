@@ -155,9 +155,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			for(int i=0;i<lexiconstats.size();i++){
 				System.out.println(lexiconstats.get(i).getAlreadyNum());
 			}
-			//Data_all data_all=new Data_all();
-			//data_all.initiateChart(pre.getTotalNum(), pre.getAlreadyNum(), pre.getAlreadyNum()-pre.getWrongNum(), wordController.getAllCount(), wordController.getRecordCount(), wordController.getRecordRightCount(), lexiconstats);		} else if (e.getSource() == helpItem) {
-			// TODO
+			Data_all.createAndShowGUI(pre.getTotalNum(), pre.getAlreadyNum(), pre.getAlreadyNum()-pre.getWrongNum(), wordController.getAllCount(), wordController.getRecordCount(), wordController.getRecordRightCount(), lexiconstats);// TODO
 		} else if (e.getSource() == AboutItem) {
 			JOptionPane.showMessageDialog(this,
 					"SE Lab4 \n Author: fengshao,chenlu,huijie", "About",

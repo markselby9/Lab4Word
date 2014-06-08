@@ -39,7 +39,21 @@ public class Data_all extends javax.swing.JFrame {
     public Data_all() {
         initComponents();
     }
-    public Data_all(String title) {
+    public Data_all(String title, int pre_total, int pre_already, int pre_correct, int all_total,
+    		 int all_already, int all_correct , ArrayList<Lexicon> lexiconList) {
+    	
+
+    	this.pre_total = pre_total;
+    	this.pre_already = pre_already;
+    	this.pre_correct = pre_correct;
+    	this.all_total = all_total;
+    	this.all_already = all_already;
+    	this.all_correct = all_correct;
+    	this.lexiconList = lexiconList;
+    	
+    	this.pre_correctRate = pre_correct/pre_already;
+    	this.all_correctRate = all_correct/all_already;
+    	
     	this.setTitle(title);
         initComponents();
     }
@@ -103,6 +117,7 @@ public class Data_all extends javax.swing.JFrame {
     	pieChart4.setPreferredSize(new Dimension(140, 120));
     	
     	//正确率比例
+    	System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~"+this.lexiconList.get(0));
     	barChart1 = addBarChart(lexiconList,1);
     	barChart1.setPreferredSize(new Dimension(300, 200));
     	
@@ -569,7 +584,9 @@ public class Data_all extends javax.swing.JFrame {
     
     
 
-    public static void createAndShowGUI(){
+    public static void createAndShowGUI(final int pre_total,final int pre_already,final int pre_correct,final int all_total,
+    		final int all_already,final int all_correct ,final ArrayList<Lexicon> lexiconList){
+    	
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
         		// 使窗口居中
@@ -579,7 +596,7 @@ public class Data_all extends javax.swing.JFrame {
         		int screenHeight = screenSize.height / 2; // 获取屏幕的高
         		int width = 650;
         		int height = 600;
-                Data_all dataall = new Data_all("总统计");
+                Data_all dataall = new Data_all("总统计",pre_total,pre_already, pre_correct, all_total, all_already, all_correct,lexiconList);
                 dataall.setVisible(true);
                 dataall.setLocation(screenWidth - width / 2, screenHeight - height / 2);
                 dataall.setSize(width,height);
@@ -602,105 +619,9 @@ public class Data_all extends javax.swing.JFrame {
         
     }
     
-    /**
-     * pre_ = present
-     * 
-     * @param pre_total
-     * @param pre_already
-     * @param pre_correct
-     * @param all_total
-     * @param all_already
-     * @param all_correct
-     * @param lexiconList
-     */
-    public void initiateChart(int pre_total,int pre_already,int pre_correct,int all_total,int all_already,int all_correct
-    		,ArrayList<Lexicon> lexiconList){
-    	this.setPre_total(pre_total);
-    	this.setPre_already(pre_already);
-    	this.setPre_correct(pre_correct);
-    	this.setAll_total(all_total);
-    	this.setAll_already(all_already);
-    	this.setAll_correct(all_correct);
-    	this.setLexiconList(lexiconList);
-    	
-    	this.setPre_correctRate(pre_correct/pre_already);
-    	this.setAll_correctRate(all_correct/all_already);
-    	
-    	createAndShowGUI();
-    	
-    }
-    
-
-    public String getWordlistName() {
-		return wordlistName;
-	}
-	public void setWordlistName(String wordlistName) {
-		this.wordlistName = wordlistName;
-	}
+  
 
 
-	public double getPre_correctRate() {
-		return pre_correctRate;
-	}
-	public void setPre_correctRate(double pre_correctRate) {
-		this.pre_correctRate = pre_correctRate;
-	}
-
-	public double getAll_correctRate() {
-		return all_correctRate;
-	}
-	public void setAll_correctRate(double all_correctRate) {
-		this.all_correctRate = all_correctRate;
-	}
-
-	public int getPre_total() {
-		return pre_total;
-	}
-	public void setPre_total(int pre_total) {
-		this.pre_total = pre_total;
-	}
-
-	public int getPre_already() {
-		return pre_already;
-	}
-	public void setPre_already(int pre_already) {
-		this.pre_already = pre_already;
-	}
-
-	public int getPre_correct() {
-		return pre_correct;
-	}
-	public void setPre_correct(int pre_correct) {
-		this.pre_correct = pre_correct;
-	}
-
-	public int getAll_total() {
-		return all_total;
-	}
-	public void setAll_total(int all_total) {
-		this.all_total = all_total;
-	}
-
-	public int getAll_already() {
-		return all_already;
-	}
-	public void setAll_already(int all_already) {
-		this.all_already = all_already;
-	}
-
-	public int getAll_correct() {
-		return all_correct;
-	}
-	public void setAll_correct(int all_correct) {
-		this.all_correct = all_correct;
-	}
-
-	public ArrayList<Lexicon> getLexiconList() {
-		return lexiconList;
-	}
-	public void setLexiconList(ArrayList<Lexicon> lexiconList) {
-		this.lexiconList = lexiconList;
-	}
 
 	// Variables declaration - do not modify
     private javax.swing.JTextField alreadyNum;
@@ -741,16 +662,16 @@ public class Data_all extends javax.swing.JFrame {
     private javax.swing.JLabel wrongNumLabel;
     // End of variables declaration
     
-    private String wordlistName;
-    private int pre_total;
-    private int pre_already;
-    private int pre_correct;
-    private int all_total;
-    private int all_already;
-    private int all_correct;
-    private ArrayList<Lexicon> lexiconList;
+     String wordlistName;
+     int pre_total;
+     int pre_already;
+     int pre_correct;
+     int all_total;
+     int all_already;
+     int all_correct;
+     ArrayList<Lexicon> lexiconList;
     
-    private double pre_correctRate;
-    private double all_correctRate;
+     double pre_correctRate;
+     double all_correctRate;
 
 }

@@ -26,6 +26,7 @@ public class BarChart {
 	public BarChart(ArrayList<Lexicon> lexiconList, int type){
 		CategoryDataset dataset;
 		JFreeChart chart = null ;
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~"+lexiconList.get(0));
 		if(type == 1){
 			dataset = getDataSetByAlready(lexiconList);
 	        chart = ChartFactory.createBarChart3D(
@@ -77,6 +78,7 @@ public class BarChart {
 	 */
 	   private static CategoryDataset getDataSetByAlready(ArrayList<Lexicon> lexiconList) {
            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
            for(int i = 0; i < lexiconList.size(); i++){
                dataset.addValue(lexiconList.get(i).getAlreadyNum(),
             		   lexiconList.get(i).getLexiconName(), lexiconList.get(i).getLexiconName());
@@ -94,8 +96,12 @@ public class BarChart {
 	       DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 	       double correctRate;
 	       for(int i = 0; i < lexiconList.size(); i++){
-	    	   correctRate = (lexiconList.get(i).getAlreadyNum()-lexiconList.get(i).getWrongNum())
-	    			   /lexiconList.get(i).getAlreadyNum();
+	    	   if(lexiconList.get(i).getAlreadyNum() == 0){
+	    		   correctRate = 0;
+	    	   }else{
+		    	   correctRate = (lexiconList.get(i).getAlreadyNum()-lexiconList.get(i).getWrongNum())
+		    			   /lexiconList.get(i).getAlreadyNum();
+	    	   }
 	           dataset.addValue(correctRate,
 	            		   lexiconList.get(i).getLexiconName(), lexiconList.get(i).getLexiconName());
 	       }
