@@ -241,7 +241,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			currindex++;
 			if(currindex>=start+wordnum){
 				//给出统计信息
-				wordController.mergerecord();
+				//wordController.mergerecord();
 				Data_small.createAndShowGUI(range.getSelectedItem().toString().toUpperCase(), wordController.getTotalInLexicon(range.getSelectedItem().toString().toUpperCase()), wordnum, rightnum);
 				//new RecordView(wordController.getListName(),wordnum,wordnum,rightnum,wrongnum);
 			}
@@ -443,7 +443,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	public static void saveView() {
 		if(wordController==null)
 			return;
-		if (wordController.mergerecord()&&wordController.saveRecord()){
+		if (wordController.saveRecord()){
 				System.out.println("保存成功！");
 		} else {
 			System.out.println("出错了！");
