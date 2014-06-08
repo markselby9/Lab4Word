@@ -14,6 +14,9 @@ import org.junit.Test;
 import controller.WordController;
 import junit.framework.TestCase;
 
+
+//Use Junit4
+//test wordcontroller.java in controller package
 public class TestWordController extends TestCase {
 
 	@BeforeClass

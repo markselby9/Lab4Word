@@ -11,6 +11,8 @@ import org.junit.Test;
 import controller.RecordController;
 import junit.framework.TestCase;
 
+//Use Junit4
+// test recordcontroller.java in controller package
 public class TestRecordController extends TestCase {
 
 	@BeforeClass
