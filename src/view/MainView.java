@@ -78,6 +78,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
     JComboBox cmb = new JComboBox();
 	JTextField inputfield=(JTextField)cmb.getEditor().getEditorComponent();
     JButton selectworddone=new JButton("确定");
+    JLabel input = new JLabel("输入单词");
 	
 	static WordController wordController = null;
 	int start;
@@ -304,10 +305,22 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		cmb.setEditable(true);
 		   	//cmb.setPopupVisible(true);
 		selectwordframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		selectwordframe.getContentPane().setLayout(new GridLayout(1,2));
+		selectwordframe.getContentPane().setLayout(new GridLayout(3,5));
 		selectwordframe.getContentPane().add(cmb);
 		selectwordframe.getContentPane().add(selectworddone);
-		selectwordframe.setSize(400,80);
+		
+		
+
+		// 使窗口居中
+		Toolkit kit = Toolkit.getDefaultToolkit(); // 定义工具包
+		Dimension screenSize = kit.getScreenSize(); // 获取屏幕的尺寸
+		int screenWidth = screenSize.width / 2; // 获取屏幕的宽
+		int screenHeight = screenSize.height / 2; // 获取屏幕的高
+		int height = 420;
+		int width = 400;
+		selectwordframe.setLocation(screenWidth - width / 2, screenHeight - height / 2);
+		// Display the window.
+		selectwordframe.setSize(width, height);
 		selectwordframe.setVisible(true);
 	}
 	
