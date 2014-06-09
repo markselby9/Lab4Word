@@ -1,5 +1,9 @@
 package view;
 
+import javax.swing.JLabel;
+
+import model.Timer;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -79,7 +83,7 @@ public class WordView extends javax.swing.JPanel {
         EngLabel.setText("单词输入");
 
         ReturnButton.setText("返回主界面");
-
+        
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(

@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import model.Lexicon;
+import model.Timer;
 import model.Word;
 import controller.WordController;
 
@@ -46,6 +47,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	JMenuItem recordItem = new JMenuItem("查看词库统计信息");
 	JMenuItem helpItem = new JMenuItem("帮助");
 	JMenuItem AboutItem = new JMenuItem("Lab作者信息");
+    Timer timer = new Timer();
 
 	//mainview2
     private javax.swing.JButton FileChooser=new JButton();
@@ -249,6 +251,8 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 				Chi.setText(wordController.getWordByID(currindex).getMeaning());
 			Eng.setText("");
 		} else if(e.getSource() == ReturnButton){
+			timer.stop();
+			JOptionPane.showMessageDialog(this, "您此次背单词总共耗时："+timer.getMinite()+"分"+timer.getSecond()+"秒时间！","这里可能要改一改。。。是要显示背单词计时的",JOptionPane.DEFAULT_OPTION);
 			contentPane.removeAll();
 			createContentPane();
 		} else if(e.getSource() == selectworddone){
@@ -390,6 +394,16 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         EngLabel.setText("单词输入");
         
         ReturnButton.setText("返回主界面");
+        
+        //TODO
+        //计时器
+        timer.init();
+        Thread t = new Thread(timer);
+        t.start();
+        //需要加入计时器的timerlabel和timertitle到Layout中，逻辑已经写好
+        JLabel timerTitle, timerLabel;
+        timerTitle = new JLabel("目前过去了：");
+        timerLabel = new JLabel();
         
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(contentPane);
         contentPane.setLayout(layout);
