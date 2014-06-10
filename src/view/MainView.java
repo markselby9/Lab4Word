@@ -219,6 +219,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 				return;
 			}
 			Word currword=wordController.getWordByID(currindex);
+			//TODO 这里同样，把输入改成选字母，跟之前的一样即可
 			if (e.getSource() == OK){
 				String input=Eng.getText();
 				if(currword.getWord().equals(input)){
@@ -391,12 +392,21 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         ChiLabel.setText("中文释义");
 
         EngLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
-        EngLabel.setText("单词输入");
+        EngLabel.setText("单词输入（这里要改成点击选择字母了，不是键盘输入）");
         
         ReturnButton.setText("返回主界面");
         
-        //TODO
-        //计时器
+		currindex=startint;
+		Word word = wordController.getWordByID(currindex);
+		Chi.setText(word.getMeaning());
+		
+        //TODO 选择字母到界面上，把list里面的东西放到界面上即可
+        System.out.println("多少个按钮："+word.alphaNumber());
+        System.out.println("哪些字母：");
+        ArrayList<Character> list = word.alphaToChoose();
+        System.out.println(list.size());
+        
+        //TODO   //计时器，把print出来的东西放到label上
         timer.init();
         Thread t = new Thread(timer);
         t.start();
@@ -448,9 +458,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
                     .addContainerGap())
             );
 		//for (int tmp = startint; tmp < startint + duration; tmp++) {
-		currindex=startint;
-		Word word = wordController.getWordByID(currindex);
-		Chi.setText(word.getMeaning());
 		//}
 	}
 
