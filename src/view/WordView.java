@@ -43,6 +43,7 @@ public class WordView extends javax.swing.JPanel {
         EngLabel = new javax.swing.JLabel();
         ReturnButton = new javax.swing.JButton();
         clock = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
 
         Chi.setFont(new java.awt.Font("微软雅黑", 0, 12));
         Chi.setText("中文释义");
@@ -91,6 +92,8 @@ public class WordView extends javax.swing.JPanel {
             }
         });
 
+        jLabel1.setText("已用时");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -110,13 +113,17 @@ public class WordView extends javax.swing.JPanel {
                             .addComponent(NOTOK, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(50, 50, 50))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(306, Short.MAX_VALUE)
+                .addContainerGap(260, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(clock, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(clock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(clock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addGap(13, 13, 13)
                 .addComponent(ChiLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -165,7 +172,9 @@ public class WordView extends javax.swing.JPanel {
     private javax.swing.JButton OK;
     private javax.swing.JButton ReturnButton;
     private javax.swing.JTextField clock;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration
 
 }
+
 
