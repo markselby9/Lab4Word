@@ -251,21 +251,28 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 				//new RecordView(wordController.getListName(),wordnum,wordnum,rightnum,wrongnum);
 			}
 			else{
-				Chi.setText(wordController.getWordByID(currindex).getMeaning());
+				Word nextword=wordController.getWordByID(currindex);
+				Chi.setText(nextword.getMeaning());
+				EngLabel.setText("点击按钮输入单词 ("+nextword.getWord().length()+"个字母)");
 				jPanel1.removeAll();
 				GridLayout buttonlayout=new GridLayout(3,5);
 		        jPanel1.setLayout(buttonlayout);
-				ArrayList<Character> list = wordController.getWordByID(currindex).alphaToChoose();
+				ArrayList<Character> list = nextword.alphaToChoose();
 				Collections.shuffle(list);
+				final int nextwordlength=nextword.getWord().length();
 		        for(int i=0;i<list.size();i++){
 		        	JButton letterbutton=new JButton(list.get(i)+"");
 		        	letterbutton.addActionListener(new ActionListener(){
-
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
 							// TODO Auto-generated method stub
-							Eng.setText(Eng.getText()+((JButton)arg0.getSource()).getText());
-							((JButton)arg0.getSource()).setEnabled(false);
+							if(Eng.getText().length()>=nextwordlength){
+								JOptionPane.showMessageDialog(contentPane,"亲输入的单词长度已达正确答案长度，无法继续输入", "提醒",JOptionPane.DEFAULT_OPTION);
+							}
+							else{
+								Eng.setText(Eng.getText()+((JButton)arg0.getSource()).getText());
+								((JButton)arg0.getSource()).setEnabled(false);
+							}
 						}});
 		        	jPanel1.add(letterbutton);
 		        }
@@ -412,7 +419,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         ChiLabel.setText("中文释义");
 
         EngLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
-        EngLabel.setText("点击按钮输入单词");
         
         Eng.setEditable(false);
         
@@ -423,6 +429,8 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		currindex=startint;
 		Word word = wordController.getWordByID(currindex);
 		Chi.setText(word.getMeaning());
+		
+		EngLabel.setText("点击按钮输入单词 ("+word.getWord().length()+"个字母)");
 		
         ArrayList<Character> list = word.alphaToChoose();
         
@@ -440,6 +448,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         GridLayout buttonlayout=new GridLayout(3,5);
         jPanel1.setLayout(buttonlayout);
         Collections.shuffle(list);
+        final int currwordlength=word.getWord().length();
         for(int i=0;i<list.size();i++){
         	JButton letterbutton=new JButton(list.get(i)+"");
         	letterbutton.addActionListener(new ActionListener(){
@@ -447,8 +456,13 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					// TODO Auto-generated method stub
-					Eng.setText(Eng.getText()+((JButton)arg0.getSource()).getText());
-					((JButton)arg0.getSource()).setEnabled(false);
+					if(Eng.getText().length()>=currwordlength){
+						JOptionPane.showMessageDialog(contentPane,"亲输入的单词长度已达正确答案长度，无法继续输入", "提醒",JOptionPane.DEFAULT_OPTION);
+					}
+					else{
+						Eng.setText(Eng.getText()+((JButton)arg0.getSource()).getText());
+						((JButton)arg0.getSource()).setEnabled(false);
+					}
 				}});
         	jPanel1.add(letterbutton);
         }
@@ -524,7 +538,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 
 	public void createContentPane() {
 		// Create the content-pane-to-be.
-		//JPanel contentPane = new JPanel(new BorderLayout());
 		contentPane.setOpaque(true);
 		
 		if (wordController == null) {
