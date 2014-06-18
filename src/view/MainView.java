@@ -64,6 +64,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
     private javax.swing.JTextField clock=new javax.swing.JTextField();
     Timer timer=new Timer(clock);
     private JPanel jPanel1=new JPanel();
+    private JButton delete=new JButton();
     private JScrollPane jScrollPane1=new JScrollPane();
 	
     // Variables declaration - do not modify
@@ -123,6 +124,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         FileChooser.addActionListener(this);
         stats.addActionListener(this);
         begin.addActionListener(this);
+        delete.addActionListener(this);
         type.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 int index = type.getSelectedIndex();
@@ -149,8 +151,18 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			Data_all.createAndShowGUI(pre.getLexiconName(),pre.getTotalNum(), pre.getAlreadyNum(), pre.getAlreadyNum()-pre.getWrongNum(), wordController.getAllCount(), wordController.getRecordCount(), wordController.getRecordRightCount(), lexiconstats);
 		} else if (e.getSource() == AboutItem) {
 			JOptionPane.showMessageDialog(this,
-					"WordMater! \n作者: 沈慧捷  陈璐  冯超逸", "关于",
+					"WordMater!\n作者: 沈慧捷  陈璐  冯超逸", "关于",
 					JOptionPane.DEFAULT_OPTION);
+		} else if(e.getSource() == delete){
+			Eng.setText("");
+			int count = jPanel1.getComponentCount();
+			for (int i = 0; i < count; i++) {
+				Component comp = jPanel1.getComponent(i);
+				if(comp instanceof JButton){
+					JButton btn = (JButton)comp;
+	                btn.setEnabled(true);
+				}
+			}
 		} else if(e.getSource() == begin){
 			//start=0;
 			wordnum=0;
@@ -210,24 +222,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			}
 			Word currword=wordController.getWordByID(currindex);
 			//TODO 这里同样，把输入改成选字母，跟之前的一样即可
-			jPanel1.removeAll();
-			GridLayout buttonlayout=new GridLayout(3,5);
-	        jPanel1.setLayout(buttonlayout);
-			ArrayList<Character> list = currword.alphaToChoose();
-			Collections.shuffle(list);
-	        for(int i=0;i<list.size();i++){
-	        	JButton letterbutton=new JButton(list.get(i)+"");
-	        	letterbutton.addActionListener(new ActionListener(){
-
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						// TODO Auto-generated method stub
-						Eng.setText(Eng.getText()+((JButton)arg0.getSource()).getText());
-						((JButton)arg0.getSource()).setEnabled(false);
-					}});
-	        	jPanel1.add(letterbutton);
-	        }
-	        jPanel1.revalidate();
 			if (e.getSource() == OK){
 				String input=Eng.getText();
 				if(currword.getWord().equals(input)){
@@ -256,8 +250,28 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 				Data_small.createAndShowGUI(range.getSelectedItem().toString().toUpperCase(), wordController.getTotalInLexicon(range.getSelectedItem().toString().toUpperCase()), wordnum, rightnum);
 				//new RecordView(wordController.getListName(),wordnum,wordnum,rightnum,wrongnum);
 			}
-			else
+			else{
 				Chi.setText(wordController.getWordByID(currindex).getMeaning());
+				jPanel1.removeAll();
+				GridLayout buttonlayout=new GridLayout(3,5);
+		        jPanel1.setLayout(buttonlayout);
+				ArrayList<Character> list = wordController.getWordByID(currindex).alphaToChoose();
+				Collections.shuffle(list);
+		        for(int i=0;i<list.size();i++){
+		        	JButton letterbutton=new JButton(list.get(i)+"");
+		        	letterbutton.addActionListener(new ActionListener(){
+
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							// TODO Auto-generated method stub
+							Eng.setText(Eng.getText()+((JButton)arg0.getSource()).getText());
+							((JButton)arg0.getSource()).setEnabled(false);
+						}});
+		        	jPanel1.add(letterbutton);
+		        }
+		        jPanel1.revalidate();
+		        jPanel1.repaint();
+			}
 			Eng.setText("");
 		} else if(e.getSource() == ReturnButton){
 			timer.stop();
@@ -398,19 +412,19 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         ChiLabel.setText("中文释义");
 
         EngLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
-        EngLabel.setText("单词输入（这里要改成点击选择字母了，不是键盘输入）");
+        EngLabel.setText("点击按钮输入单词");
+        
+        Eng.setEditable(false);
         
         ReturnButton.setText("返回主界面");
+        
+        delete.setText("删除");
         
 		currindex=startint;
 		Word word = wordController.getWordByID(currindex);
 		Chi.setText(word.getMeaning());
 		
-        //TODO 选择字母到界面上，把list里面的东西放到界面上即可
-        System.out.println("多少个按钮："+word.alphaNumber());
-        System.out.println("哪些字母：");
         ArrayList<Character> list = word.alphaToChoose();
-        System.out.println(list.size());
         
         //TODO 计时器，把print出来的东西放到label上
         timer.init();
@@ -450,16 +464,19 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addGap(64, 64, 64)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
                         .addComponent(EngLabel, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(ChiLabel, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(Eng, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
-                        .addComponent(Chi, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+                        .addComponent(Chi, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addComponent(OK, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                            .addComponent(NOTOK, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGap(50, 50, 50))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                            .addComponent(NOTOK, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(Eng, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(delete, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)))
+                    .addGap(36, 36, 36))
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(254, Short.MAX_VALUE)
                     .addComponent(clockLabel)
@@ -479,7 +496,9 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(EngLabel)
                     .addGap(3, 3, 3)
-                    .addComponent(Eng, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(Eng, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -488,7 +507,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
                         .addComponent(NOTOK))
                     .addGap(18, 18, 18)
                     .addComponent(ReturnButton)
-                    .addContainerGap(38, Short.MAX_VALUE))
+                    .addContainerGap(37, Short.MAX_VALUE))
             );
 	}
 
