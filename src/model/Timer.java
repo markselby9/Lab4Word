@@ -3,6 +3,8 @@ package model;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import javax.swing.JTextField;
+
 
 public class Timer implements Runnable {
 	SimpleDateFormat dateFormat;
@@ -10,8 +12,10 @@ public class Timer implements Runnable {
 	long startTime, nowTime, showTime, showSec, showMin;
     Calendar now;
 	boolean flag;
+	JTextField clock;
 	
-	public Timer(){
+	public Timer(JTextField clock){
+		this.clock=clock;
 		init();
 	}
 	
@@ -36,8 +40,7 @@ public class Timer implements Runnable {
             showSec = showTime/1000;
             showMin = showSec / 60;
             showSec -= showMin*60;
-            System.out.println("Second:"+showSec);
-            System.out.println("Minute:"+showMin);
+            clock.setText(showMin+":"+showSec);
                         
             try
             {

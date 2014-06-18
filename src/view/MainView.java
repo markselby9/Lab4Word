@@ -44,7 +44,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	JMenuItem recordItem = new JMenuItem("查看词库统计信息");
 	JMenuItem helpItem = new JMenuItem("帮助");
 	JMenuItem AboutItem = new JMenuItem("Lab作者信息");
-    Timer timer = new Timer();
 
 	//mainview2
     private javax.swing.JButton FileChooser=new JButton();
@@ -60,7 +59,8 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
     private javax.swing.JComboBox type=new JComboBox();
     private javax.swing.JComboBox range=new JComboBox();
     private javax.swing.JLabel filename=new JLabel();
-	//
+    private javax.swing.JTextField clock=new javax.swing.JTextField();;
+    Timer timer = new Timer(clock);
 	
     // Variables declaration - do not modify
     private JTextField Chi=new JTextField();
@@ -349,12 +349,12 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		}
 		System.out.println("从第"+start+"个开始,背"+wordnum+"个");
 		currindex=start;
-		recitationview(start, wordnum);
+		recitationview(start);
 	}
 	
 	// 背单词过程 ////////////////////// 这里是界面上的背单词过程
 	// controller控制实际上的背单词过程，实现包括保存记录等功能
-	public void recitationview(int startint, int duration) {
+	public void recitationview(int startint) {
 		//wordController.startReciting(startint, duration);
 		contentPane.removeAll();
 
@@ -414,18 +414,18 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
                             .addComponent(OK, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(42, 42, 42)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(ReturnButton, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(NOTOK, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(ReturnButton, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+                                .addComponent(NOTOK, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGap(50, 50, 50))
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(306, Short.MAX_VALUE)
+                    .addComponent(clock, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
             );
             layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(34, 34, 34)
+                    .addComponent(clock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(13, 13, 13)
                     .addComponent(ChiLabel)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(Chi, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
