@@ -42,6 +42,7 @@ public class WordView extends javax.swing.JPanel {
         ChiLabel = new javax.swing.JLabel();
         EngLabel = new javax.swing.JLabel();
         ReturnButton = new javax.swing.JButton();
+        clock = new javax.swing.JTextField();
 
         Chi.setFont(new java.awt.Font("微软雅黑", 0, 12));
         Chi.setText("中文释义");
@@ -59,7 +60,7 @@ public class WordView extends javax.swing.JPanel {
             }
         });
 
-        OK.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
+        OK.setFont(new java.awt.Font("微软雅黑", 0, 12));
         OK.setText("我非常确定^-^");
         OK.setActionCommand("d");
         OK.addActionListener(new java.awt.event.ActionListener() {
@@ -68,7 +69,7 @@ public class WordView extends javax.swing.JPanel {
             }
         });
 
-        NOTOK.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
+        NOTOK.setFont(new java.awt.Font("微软雅黑", 0, 12));
         NOTOK.setText("我不记得了T-T");
         NOTOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -83,7 +84,13 @@ public class WordView extends javax.swing.JPanel {
         EngLabel.setText("单词输入");
 
         ReturnButton.setText("返回主界面");
-        
+
+        clock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clockActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -99,18 +106,18 @@ public class WordView extends javax.swing.JPanel {
                         .addComponent(OK, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(42, 42, 42)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(ReturnButton, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(NOTOK, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(ReturnButton, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+                            .addComponent(NOTOK, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(50, 50, 50))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(306, Short.MAX_VALUE)
+                .addComponent(clock, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addComponent(clock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(13, 13, 13)
                 .addComponent(ChiLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Chi, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -143,7 +150,11 @@ public class WordView extends javax.swing.JPanel {
     private void NOTOKActionPerformed(java.awt.event.ActionEvent evt) {                                      
         // TODO add your handling code here:
     }                                     
-    
+
+    private void clockActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
+
 
     // Variables declaration - do not modify
     private javax.swing.JTextField Chi;
@@ -153,6 +164,7 @@ public class WordView extends javax.swing.JPanel {
     private javax.swing.JButton NOTOK;
     private javax.swing.JButton OK;
     private javax.swing.JButton ReturnButton;
+    private javax.swing.JTextField clock;
     // End of variables declaration
 
 }
