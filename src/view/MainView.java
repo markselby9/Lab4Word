@@ -738,7 +738,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		Dimension screenSize = kit.getScreenSize(); // 获取屏幕的尺寸
 		int screenWidth = screenSize.width / 2; // 获取屏幕的宽
 		int screenHeight = screenSize.height / 2; // 获取屏幕的高
-		int height = 420;
+		int height = 460;
 		int width = 400;
 		frame.setLocation(screenWidth - width / 2, screenHeight - height / 2);
 		// Display the window.

@@ -183,7 +183,7 @@ public class Data_small extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(timeLabel)
                         .addComponent(time, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(wordlistName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(wordlistNameLabel))
@@ -227,6 +227,7 @@ public class Data_small extends javax.swing.JFrame {
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
+        jPanel1.setBackground(Color.white);
         jPanel1Layout.setHorizontalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -283,14 +284,15 @@ public class Data_small extends javax.swing.JFrame {
         		int screenWidth = screenSize.width / 2; // 获取屏幕的宽
         		int screenHeight = screenSize.height / 2; // 获取屏幕的高
         		int width = 250;
-        		int height = 400;
+        		int height = 430;
                 Data_small datasmall = new Data_small("背词统计",wordlistName,totalNumber,alreadyNumber,correctNumber,time);
+                
                 datasmall.setVisible(true);
                 datasmall.setLocation(screenWidth - width / 2, screenHeight - height / 2);
                 datasmall.setSize(width,height);
                 datasmall.setResizable(false);
                 
-
+                datasmall.setBackground(Color.white);
         		ImageIcon image = new ImageIcon("./images/icon.jpg");
         		datasmall.setIconImage(image.getImage());
         		datasmall.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
