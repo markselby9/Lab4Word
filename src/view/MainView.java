@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -21,6 +22,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import model.Lexicon;
@@ -59,8 +61,10 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
     private javax.swing.JComboBox type=new JComboBox();
     private javax.swing.JComboBox range=new JComboBox();
     private javax.swing.JLabel filename=new JLabel();
-    private javax.swing.JTextField clock=new javax.swing.JTextField();;
-    Timer timer = new Timer(clock);
+    private javax.swing.JTextField clock=new javax.swing.JTextField();
+    Timer timer=new Timer(clock);
+    private JPanel jPanel1=new JPanel();
+    private JScrollPane jScrollPane1=new JScrollPane();
 	
     // Variables declaration - do not modify
     private JTextField Chi=new JTextField();
@@ -206,6 +210,24 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			}
 			Word currword=wordController.getWordByID(currindex);
 			//TODO 这里同样，把输入改成选字母，跟之前的一样即可
+			jPanel1.removeAll();
+			GridLayout buttonlayout=new GridLayout(3,5);
+	        jPanel1.setLayout(buttonlayout);
+			ArrayList<Character> list = currword.alphaToChoose();
+			Collections.shuffle(list);
+	        for(int i=0;i<list.size();i++){
+	        	JButton letterbutton=new JButton(list.get(i)+"");
+	        	letterbutton.addActionListener(new ActionListener(){
+
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						// TODO Auto-generated method stub
+						Eng.setText(Eng.getText()+((JButton)arg0.getSource()).getText());
+						((JButton)arg0.getSource()).setEnabled(false);
+					}});
+	        	jPanel1.add(letterbutton);
+	        }
+	        jPanel1.revalidate();
 			if (e.getSource() == OK){
 				String input=Eng.getText();
 				if(currword.getWord().equals(input)){
@@ -395,37 +417,62 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         Thread t = new Thread(timer);
         t.start();
         //TODO 需要加入计时器的timerlabel和timertitle到Layout中，逻辑已经写好
-        JLabel timerTitle, timerLabel;
-        timerTitle = new JLabel("目前过去了：");
-        timerLabel = new JLabel();
+        JLabel clockLabel = new JLabel("已用时：");
+        
+        clock.setEditable(false);
+        
+        jScrollPane1.setViewportView(jPanel1);
+        
+        GridLayout buttonlayout=new GridLayout(3,5);
+        jPanel1.setLayout(buttonlayout);
+        Collections.shuffle(list);
+        for(int i=0;i<list.size();i++){
+        	JButton letterbutton=new JButton(list.get(i)+"");
+        	letterbutton.addActionListener(new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					// TODO Auto-generated method stub
+					Eng.setText(Eng.getText()+((JButton)arg0.getSource()).getText());
+					((JButton)arg0.getSource()).setEnabled(false);
+				}});
+        	jPanel1.add(letterbutton);
+        }
         
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(contentPane);
         contentPane.setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(117, Short.MAX_VALUE)
+                    .addComponent(ReturnButton, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(109, 109, 109))
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addGap(64, 64, 64)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
                         .addComponent(EngLabel, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(ChiLabel, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(Eng, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
                         .addComponent(Chi, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addComponent(OK, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(42, 42, 42)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(ReturnButton, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
-                                .addComponent(NOTOK, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                            .addComponent(NOTOK, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGap(50, 50, 50))
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(306, Short.MAX_VALUE)
-                    .addComponent(clock, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addContainerGap(254, Short.MAX_VALUE)
+                    .addComponent(clockLabel)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(clock, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
             );
             layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addComponent(clock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(13, 13, 13)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(clockLabel)
+                        .addComponent(clock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(19, 19, 19)
                     .addComponent(ChiLabel)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(Chi, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -433,13 +480,15 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
                     .addComponent(EngLabel)
                     .addGap(3, 3, 3)
                     .addComponent(Eng, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(18, 18, 18)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(NOTOK)
-                        .addComponent(OK))
-                    .addGap(52, 52, 52)
+                        .addComponent(OK)
+                        .addComponent(NOTOK))
+                    .addGap(18, 18, 18)
                     .addComponent(ReturnButton)
-                    .addContainerGap())
+                    .addContainerGap(38, Short.MAX_VALUE))
             );
 	}
 
