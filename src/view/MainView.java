@@ -218,10 +218,10 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 						JOptionPane.DEFAULT_OPTION);
 				Eng.setText("");
 				Chi.setText("");
+				jPanel1.removeAll();
 				return;
 			}
 			Word currword=wordController.getWordByID(currindex);
-			//TODO 这里同样，把输入改成选字母，跟之前的一样即可
 			if (e.getSource() == OK){
 				String input=Eng.getText();
 				if(currword.getWord().equals(input)){
@@ -247,15 +247,17 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			if(currindex>=start+wordnum){
 				//给出统计信息
 				//wordController.mergerecord();
-				Data_small.createAndShowGUI(range.getSelectedItem().toString().toUpperCase(), wordController.getTotalInLexicon(range.getSelectedItem().toString().toUpperCase()), wordnum, rightnum);
-				//new RecordView(wordController.getListName(),wordnum,wordnum,rightnum,wrongnum);
+				Data_small.createAndShowGUI(range.getSelectedItem().toString().toUpperCase(), wordController.getTotalInLexicon(range.getSelectedItem().toString().toUpperCase()), wordnum, rightnum, timer.gethms());
+				Eng.setText("");
+				Chi.setText("");
+				jPanel1.removeAll();
 			}
 			else{
 				Word nextword=wordController.getWordByID(currindex);
 				Chi.setText(nextword.getMeaning());
 				EngLabel.setText("点击按钮输入单词 ("+nextword.getWord().length()+"个字母)");
 				jPanel1.removeAll();
-				GridLayout buttonlayout=new GridLayout(3,5);
+				GridLayout buttonlayout=new GridLayout(3,6,5,5);
 		        jPanel1.setLayout(buttonlayout);
 				ArrayList<Character> list = nextword.alphaToChoose();
 				Collections.shuffle(list);
@@ -282,7 +284,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			Eng.setText("");
 		} else if(e.getSource() == ReturnButton){
 			timer.stop();
-			JOptionPane.showMessageDialog(this, "您此次背单词总共耗时："+timer.getMinite()+"分"+timer.getSecond()+"秒时间！","这里可能要改一改。。。是要显示背单词计时的",JOptionPane.DEFAULT_OPTION);
 			contentPane.removeAll();
 			createContentPane();
 		} else if(e.getSource() == selectworddone){
@@ -444,8 +445,10 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         clock.setEditable(false);
         
         jScrollPane1.setViewportView(jPanel1);
+        jScrollPane1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); 
+        jScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED); 
         
-        GridLayout buttonlayout=new GridLayout(3,5);
+        GridLayout buttonlayout=new GridLayout(3,6,5,5);
         jPanel1.setLayout(buttonlayout);
         Collections.shuffle(list);
         final int currwordlength=word.getWord().length();

@@ -2,6 +2,7 @@ package model;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import javax.swing.JTextField;
 
@@ -9,7 +10,8 @@ import javax.swing.JTextField;
 public class Timer implements Runnable {
 	SimpleDateFormat dateFormat;
 	Calendar startCalendar;
-	long startTime, nowTime, showTime, showSec, showMin;
+	long startTime, nowTime, showTime;
+	String hms;
     Calendar now;
 	boolean flag;
 	JTextField clock;
@@ -20,7 +22,8 @@ public class Timer implements Runnable {
 	}
 	
 	public void init(){
-		dateFormat = new SimpleDateFormat("hh:mm:ss");
+		dateFormat = new SimpleDateFormat("HH:mm:ss");
+		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
         startCalendar = Calendar.getInstance();
         startTime = startCalendar.getTime().getTime(); // 获得开始时候的那个时间点
         flag = true;
@@ -32,15 +35,17 @@ public class Timer implements Runnable {
 
 	@Override
 	public void run() {
-		while(true && flag)
+		while(flag)
         {
             now = Calendar.getInstance();
             nowTime = now.getTime().getTime();
             showTime = nowTime-startTime;
-            showSec = showTime/1000;
-            showMin = showSec / 60;
-            showSec -= showMin*60;
-            clock.setText(showMin+":"+showSec);
+            //showSec = showTime/1000;
+            hms = dateFormat.format(showTime);
+            
+            //showMin = showSec / 60;
+            //showSec -= showMin*60;
+            clock.setText(hms);
                         
             try
             {
@@ -53,11 +58,7 @@ public class Timer implements Runnable {
         }
 	}
 	
-	public long getMinite(){
-		return showMin;
-	}
-	
-	public long getSecond(){
-		return showSec;
+	public String gethms(){
+		return hms;
 	}
 }

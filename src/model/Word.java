@@ -60,10 +60,6 @@ public class Word {
 			}
 			else{
 				int rand = (int)(Math.random()*26);
-				while (ret.contains(all[rand])){
-					rand = (int)(Math.random()*26);
-					System.out.println(rand);
-				}
 				ret.add(all[rand]);
 			}
 		}
