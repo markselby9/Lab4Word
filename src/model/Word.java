@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 // 单词类
 public class Word {
 	
@@ -36,6 +38,33 @@ public class Word {
 		this.meaning = meaning;
 	}
 
+	public int alphaNumber(){
+		return (int) (this.word.length()*1.5);
+	}
+	
+	public ArrayList<Character> alphaToChoose(){
+		char[] all = new char[26];
+		for (int i = 0; i < 26; i++){
+			all[i] = (char) ('a'+i);
+		}
+		ArrayList<Character> ret = new ArrayList<Character>();
+		char[] word = getWord().toCharArray();
+		
+		for (int i = 0; i < alphaNumber(); i++){
+			if (i<word.length){
+				ret.add(word[i]);
+			}else{
+				int rand = (int)(Math.random()*26);
+				while (ret.contains(all[rand])){
+					rand = (int)(Math.random()*26);
+					System.out.println(rand);
+				}
+				ret.add(all[rand]);
+			}
+		}
+		return ret;
+	}
+	
 	public Word(){
 		
 	}

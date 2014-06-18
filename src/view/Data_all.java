@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -51,8 +52,16 @@ public class Data_all extends javax.swing.JFrame {
     	this.all_correct = all_correct;
     	this.lexiconList = lexiconList;
     	
-    	this.pre_correctRate = pre_correct/pre_already;
-    	this.all_correctRate = all_correct/all_already;
+    	if(pre_already==0)
+    		this.pre_correctRate=0;
+    	else
+    		this.pre_correctRate = 100*pre_correct/(pre_already+0.0);
+    	DecimalFormat df = new DecimalFormat("#.00");
+    	this.pre_correctRateStr=df.format(pre_correctRate)+"%";
+    	if(pre_correctRateStr.startsWith(".")){
+    		pre_correctRateStr="0"+pre_correctRateStr;
+    	}
+    	//this.all_correctRate = all_correct/all_already;
     	
     	this.setTitle("总统计");
         initComponents();
@@ -133,26 +142,31 @@ public class Data_all extends javax.swing.JFrame {
         totalNumLabel.setText("当前词库单词总数");
 
         totalNum.setText(""+this.pre_total);
+        totalNum.setEditable(false);
 
         alreadyNumLabel.setFont(new java.awt.Font("微软雅黑", 0, 12));
         alreadyNumLabel.setText("当前词库已背单词数");
 
         alreadyNum.setText(""+this.pre_already);
+        alreadyNum.setEditable(false);
 
         correctNumLabel.setFont(new java.awt.Font("微软雅黑", 0, 12));
         correctNumLabel.setText("当前词库正确单词数");
 
         correctNum.setText(""+this.pre_correct);
+        correctNum.setEditable(false);
 
         wrongNumLabel.setFont(new java.awt.Font("微软雅黑", 0, 12));
         wrongNumLabel.setText("当前词库错误单词数");
 
         wrongNum.setText(""+(this.pre_already-this.pre_correct));
+        wrongNum.setEditable(false);
 
         correctRateLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         correctRateLabel.setText("当前词库正确率");
 
-        correctRate.setText(""+this.pre_correctRate);
+        correctRate.setText(pre_correctRateStr);
+        correctRate.setEditable(false);
         correctRate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 correctRateActionPerformed(evt);
@@ -160,6 +174,7 @@ public class Data_all extends javax.swing.JFrame {
         });
 
         wordListName.setText(""+this.wordlistName);
+        wordListName.setEditable(false);
         wordListName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 wordListNameActionPerformed(evt);
@@ -599,7 +614,7 @@ public class Data_all extends javax.swing.JFrame {
                 dataall.setVisible(true);
                 dataall.setLocation(screenWidth - width / 2, screenHeight - height / 2);
                 dataall.setSize(width,height);
-                
+                dataall.setResizable(false);
                 
 
         		ImageIcon image = new ImageIcon("./images/icon.jpg");
@@ -665,6 +680,7 @@ public class Data_all extends javax.swing.JFrame {
      ArrayList<Lexicon> lexiconList;
     
      double pre_correctRate;
-     double all_correctRate;
+     String pre_correctRateStr;
+     //double all_correctRate;
 
 }

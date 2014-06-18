@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import model.Lexicon;
+import model.Timer;
 import model.Word;
 import controller.WordController;
 
@@ -46,6 +47,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	JMenuItem recordItem = new JMenuItem("查看词库统计信息");
 	JMenuItem helpItem = new JMenuItem("帮助");
 	JMenuItem AboutItem = new JMenuItem("Lab作者信息");
+    Timer timer = new Timer();
 
 	//mainview2
     private javax.swing.JButton FileChooser=new JButton();
@@ -74,12 +76,14 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
     private JButton ReturnButton=new JButton();
     // End of variables declaration
 
+    //select word frame
     JFrame selectwordframe=new JFrame();
     JComboBox cmb = new JComboBox();
 	JTextField inputfield=(JTextField)cmb.getEditor().getEditorComponent();
     JButton selectworddone=new JButton("确定");
-    JLabel input = new JLabel("输入单词");
-	
+   	JLabel inputLabel=new JLabel();
+	//
+    
 	static WordController wordController = null;
 	int start;
 	int wordnum;
@@ -95,7 +99,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		menuBar = new JMenuBar();
 
 		// Build the first menu.
-		menu = new JMenu("开始(B)");
+		/*menu = new JMenu("开始(B)");
 		menu.setMnemonic('B');
 		menu.getAccessibleContext().setAccessibleDescription("System menu");
 		menuBar.add(menu);
@@ -103,6 +107,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		recordItem.setMnemonic(KeyEvent.VK_D);
 		recordItem.addActionListener(this);
 		menu.add(recordItem);
+		*/
 		
 		// Build second menu in the menu bar.
 		menu = new JMenu("更多(M)");
@@ -142,24 +147,19 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == FileChooser) {
 			chooseFile();
-		} else if (e.getSource() == recordItem) {
-			// TODO
-			int recordcount=wordController.getRecordCount();
-			int recordrightcount=wordController.getRecordRightCount();
-			new RecordView(wordController.getListName(),wordController.getAllCount(),recordcount,recordrightcount,recordcount-recordrightcount);
+		} else if (e.getSource() == helpItem) {
+			JOptionPane.showMessageDialog(this,
+					"使用方法：选择词汇文件后，选择词库，背诵方式和需要背诵的单词数。\n背完指定单词后，会显示统计信息。\n更详细的统计信息请点击主界面的“统计”按钮。\n如需更多帮助，请联系：markselbyfcy@163.com", "帮助",
+					JOptionPane.DEFAULT_OPTION);
 		} else if(e.getSource()==stats){
 			//int pre_total,int pre_already,int pre_correct,int all_total,int all_already,int all_correct
     		ArrayList<Lexicon> lexiconstats=wordController.getLexiconStats();
     		char start=range.getSelectedItem().toString().toUpperCase().charAt(0);
 			Lexicon pre=lexiconstats.get(start-65);
-			System.out.println("lexi stats");
-			for(int i=0;i<lexiconstats.size();i++){
-				System.out.println(lexiconstats.get(i).getAlreadyNum());
-			}
 			Data_all.createAndShowGUI(pre.getLexiconName(),pre.getTotalNum(), pre.getAlreadyNum(), pre.getAlreadyNum()-pre.getWrongNum(), wordController.getAllCount(), wordController.getRecordCount(), wordController.getRecordRightCount(), lexiconstats);// TODO
 		} else if (e.getSource() == AboutItem) {
 			JOptionPane.showMessageDialog(this,
-					"SE Lab4 \n Author: fengshao,chenlu,huijie", "About",
+					"WordMater! \n作者: 沈慧捷  陈璐  冯超逸", "关于",
 					JOptionPane.DEFAULT_OPTION);
 		} else if(e.getSource() == begin){
 			//start=0;
@@ -190,11 +190,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 				else{
 					start++;//从没背过该词库，从头开始
 				}
-					//afterselectword();
-			} //else if (index == 2) {//自己选从哪里背
-				// TODO
-				//selectWord();
-			//}
+			} 
 			String input = Number.getText();
 			if (input.equals("")) {
 				JOptionPane.showMessageDialog(this, "您忘记输入背诵单词数了吧。。。", "出错啦",
@@ -223,6 +219,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 				return;
 			}
 			Word currword=wordController.getWordByID(currindex);
+			//TODO 这里同样，把输入改成选字母，跟之前的一样即可
 			if (e.getSource() == OK){
 				String input=Eng.getText();
 				if(currword.getWord().equals(input)){
@@ -247,7 +244,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			currindex++;
 			if(currindex>=start+wordnum){
 				//给出统计信息
-				wordController.mergerecord();
+				//wordController.mergerecord();
 				Data_small.createAndShowGUI(range.getSelectedItem().toString().toUpperCase(), wordController.getTotalInLexicon(range.getSelectedItem().toString().toUpperCase()), wordnum, rightnum);
 				//new RecordView(wordController.getListName(),wordnum,wordnum,rightnum,wrongnum);
 			}
@@ -255,10 +252,12 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 				Chi.setText(wordController.getWordByID(currindex).getMeaning());
 			Eng.setText("");
 		} else if(e.getSource() == ReturnButton){
+			timer.stop();
+			JOptionPane.showMessageDialog(this, "您此次背单词总共耗时："+timer.getMinite()+"分"+timer.getSecond()+"秒时间！","这里可能要改一改。。。是要显示背单词计时的",JOptionPane.DEFAULT_OPTION);
 			contentPane.removeAll();
 			createContentPane();
 		} else if(e.getSource() == selectworddone){
-			if(inputfield.getText().toUpperCase().charAt(0)!=range.getSelectedItem().toString().toUpperCase().charAt(0)){
+			if(inputfield.getText().length()==0||inputfield.getText().toUpperCase().charAt(0)!=range.getSelectedItem().toString().toUpperCase().charAt(0)){
 				JOptionPane.showMessageDialog(this,"词库中没有您输入的单词，将默认从第一个单词开始", "出错啦",
 						JOptionPane.WARNING_MESSAGE);
 				start=wordController.getStartInLexicon(range.getSelectedItem().toString());
@@ -304,46 +303,48 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	public void selectWord(){
 		cmb.setEditable(true);
 		   	//cmb.setPopupVisible(true);
-		selectwordframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		selectwordframe.getContentPane().setLayout(new GridLayout(3,5));
-		selectwordframe.getContentPane().add(cmb);
-		selectwordframe.getContentPane().add(selectworddone);
-		
-		
 
-		// 使窗口居中
-		Toolkit kit = Toolkit.getDefaultToolkit(); // 定义工具包
-		Dimension screenSize = kit.getScreenSize(); // 获取屏幕的尺寸
-		int screenWidth = screenSize.width / 2; // 获取屏幕的宽
-		int screenHeight = screenSize.height / 2; // 获取屏幕的高
-		int height = 420;
-		int width = 400;
-		selectwordframe.setLocation(screenWidth - width / 2, screenHeight - height / 2);
-		// Display the window.
-		selectwordframe.setSize(width, height);
-		selectwordframe.setVisible(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        inputLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
+        inputLabel.setText("输入单词");
+
+        selectworddone.setText("确认");
+        
+        selectwordframe.setTitle("从指定单词开始");
+        selectwordframe.setResizable(false);
+        selectwordframe.setSize(380,80);
+        int w = (Toolkit.getDefaultToolkit().getScreenSize().width - selectwordframe.getWidth()) / 2;
+        int h = (Toolkit.getDefaultToolkit().getScreenSize().height - selectwordframe.getHeight()) / 2;
+        selectwordframe.setLocation(w, h);
+        
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(selectwordframe.getContentPane());
+        selectwordframe.getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(inputLabel)
+                .addGap(39, 39, 39)
+                .addComponent(cmb, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
+                .addComponent(selectworddone)
+                .addContainerGap(31, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(28, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(inputLabel)
+                    .addComponent(selectworddone)
+                    .addComponent(cmb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33))
+        );
+
+        pack();
+        selectwordframe.setVisible(true);
 	}
-	
-	/*
-	public int setWordNum(){
-		int num=0;
-		while(true){
-			String input = JOptionPane.showInputDialog("您今天想背多少个单词?");
-			if (input == null) {
-				JOptionPane.showMessageDialog(this, "您忘记输入了吧。。。", "出错啦",
-						JOptionPane.WARNING_MESSAGE);
-				continue;
-			}
-			try{
-				num = Integer.parseInt(input);
-				break;
-			} catch(NumberFormatException e){
-				JOptionPane.showMessageDialog(this, "亲，请输入数字，不可过长（如几十亿。。。）", "出错啦",
-						JOptionPane.WARNING_MESSAGE);
-			}
-		}
-		return num;
-	}*/
 	
 	public void afterselectword(){
 		int valid=wordController.isValid(start, wordnum, range.getSelectedItem().toString());
@@ -391,9 +392,28 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         ChiLabel.setText("中文释义");
 
         EngLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
-        EngLabel.setText("单词输入");
+        EngLabel.setText("单词输入（这里要改成点击选择字母了，不是键盘输入）");
         
         ReturnButton.setText("返回主界面");
+        
+		currindex=startint;
+		Word word = wordController.getWordByID(currindex);
+		Chi.setText(word.getMeaning());
+		
+        //TODO 选择字母到界面上，把list里面的东西放到界面上即可
+        System.out.println("多少个按钮："+word.alphaNumber());
+        System.out.println("哪些字母：");
+        ArrayList<Character> list = word.alphaToChoose();
+        System.out.println(list.size());
+        
+        //TODO   //计时器，把print出来的东西放到label上
+        timer.init();
+        Thread t = new Thread(timer);
+        t.start();
+        //需要加入计时器的timerlabel和timertitle到Layout中，逻辑已经写好
+        JLabel timerTitle, timerLabel;
+        timerTitle = new JLabel("目前过去了：");
+        timerLabel = new JLabel();
         
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(contentPane);
         contentPane.setLayout(layout);
@@ -438,9 +458,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
                     .addContainerGap())
             );
 		//for (int tmp = startint; tmp < startint + duration; tmp++) {
-		currindex=startint;
-		Word word = wordController.getWordByID(currindex);
-		Chi.setText(word.getMeaning());
 		//}
 	}
 
@@ -448,7 +465,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 	public static void saveView() {
 		if(wordController==null)
 			return;
-		if (wordController.mergerecord()&&wordController.saveRecord()){
+		if (wordController.saveRecord()){
 				System.out.println("保存成功！");
 		} else {
 			System.out.println("出错了！");
@@ -520,7 +537,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         jLabel1.setText("方式");
 
         FileChooser.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
-        FileChooser.setText("filechooser");
+        FileChooser.setText("选择文件");
 
         jLabel3.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         jLabel3.setText("单词数");
@@ -645,6 +662,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		JFrame frame = new JFrame("WordMaster!");
 		ImageIcon image = new ImageIcon("./images/icon.jpg");
 		frame.setIconImage(image.getImage());
+		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {

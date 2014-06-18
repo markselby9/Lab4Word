@@ -25,7 +25,6 @@ public class WordController {
 	int [] lastto;
 	ArrayList<Word> wordlist;
 	//ArrayList<Word> currentwordlist;
-	HashMap<Integer,Integer> newrecordmap;
 	HashMap<Integer,Integer> recordmap;
 	HashMap<Integer,String> startmap;
 	//ArrayList<Record> recordlist;
@@ -39,7 +38,6 @@ public class WordController {
 		startmap=new HashMap<Integer,String>();
 		loadwordlist();
 		loadrecord();
-		newrecordmap=new HashMap<Integer,Integer>();
 	}
 	
 	public void loadrecord(){
@@ -214,23 +212,6 @@ public class WordController {
 		String[] arr = this.filePath.split("\\\\");
 		return arr[arr.length-1];
 	}
-
-	/*
-	public boolean isValid(String str1, String str2){
-		if (str1.length()==0||str2.length()==0){
-			return false;
-		}
-		if (!isInteger(str1)||!isInteger(str2)){
-			return false;
-		}
-		if (Integer.parseInt(str1)<0 || Integer.parseInt(str1)>getAllCount()){
-			return false;
-		}
-		if (Integer.parseInt(str2)<0 || Integer.parseInt(str1)+Integer.parseInt(str2)>getAllCount()){
-			return false;
-		}
-		return true;
-	}*/
 	
 	public int isValid(int start, int num, String lexicon){
 		int lastinlexicon=getLastInLexicon(lexicon.toUpperCase());
@@ -250,27 +231,13 @@ public class WordController {
 	public void addRecord(int id, int pass){
 		String start=startmap.get(id);
 		lastto[start.toUpperCase().charAt(0)-65]=id;
-		newrecordmap.put(id, pass); 
-	}
-	
-	public boolean mergerecord(){
-		Set<Integer> keys=newrecordmap.keySet();
-		Iterator<Integer> ite=keys.iterator();
-		//if(keys.size()>0)
-			//lastto=0;
-		while(ite.hasNext()){
-			int tmp=ite.next();
-			//lastto=Math.max(lastto, tmp);
-			if(recordmap.containsKey(tmp)){
-				if(recordmap.get(tmp)==0&&newrecordmap.get(tmp)==1)
-					recordmap.put(tmp, 1);
-			}
-			else{
-				recordmap.put(tmp, newrecordmap.get(tmp));
-			}
+		if(recordmap.containsKey(id)){
+			if(recordmap.get(id)==0&&pass==1)
+				recordmap.put(id, 1);
 		}
-		newrecordmap.clear();
-		return true;
+		else{
+			recordmap.put(id,pass);
+		}
 	}
 	
 	public boolean saveRecord(){

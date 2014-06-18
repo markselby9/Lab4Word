@@ -30,7 +30,7 @@ public class SelectWordFrame extends javax.swing.JFrame {
         inputLabel.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         inputLabel.setText("输入单词");
 
-        selectworddone.setText("jButton1");
+        selectworddone.setText("确认");
 
         cmb.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
