@@ -20,11 +20,8 @@ import javax.swing.JMenuBar;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
 
 import model.Lexicon;
 import model.Timer;
@@ -70,7 +67,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
     private JLabel ChiLabel=new JLabel();
     private JLabel logoIcon = new JLabel();
     private JTextField Eng=new JTextField();
-    private JLabel EngLabel=new JLabel();;
+    private JLabel EngLabel=new JLabel();
     private JButton NOTOK=new JButton();
     private JButton OK=new JButton();
     private JButton ReturnButton=new JButton();
@@ -98,17 +95,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		// Create the menu bar.
 		menuBar = new JMenuBar();
 
-		// Build the first menu.
-		/*menu = new JMenu("开始(B)");
-		menu.setMnemonic('B');
-		menu.getAccessibleContext().setAccessibleDescription("System menu");
-		menuBar.add(menu);
-
-		recordItem.setMnemonic(KeyEvent.VK_D);
-		recordItem.addActionListener(this);
-		menu.add(recordItem);
-		*/
-		
 		// Build second menu in the menu bar.
 		menu = new JMenu("更多(M)");
 		menu.setMnemonic('M');
@@ -156,7 +142,7 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
     		ArrayList<Lexicon> lexiconstats=wordController.getLexiconStats();
     		char start=range.getSelectedItem().toString().toUpperCase().charAt(0);
 			Lexicon pre=lexiconstats.get(start-65);
-			Data_all.createAndShowGUI(pre.getLexiconName(),pre.getTotalNum(), pre.getAlreadyNum(), pre.getAlreadyNum()-pre.getWrongNum(), wordController.getAllCount(), wordController.getRecordCount(), wordController.getRecordRightCount(), lexiconstats);// TODO
+			Data_all.createAndShowGUI(pre.getLexiconName(),pre.getTotalNum(), pre.getAlreadyNum(), pre.getAlreadyNum()-pre.getWrongNum(), wordController.getAllCount(), wordController.getRecordCount(), wordController.getRecordRightCount(), lexiconstats);
 		} else if (e.getSource() == AboutItem) {
 			JOptionPane.showMessageDialog(this,
 					"WordMater! \n作者: 沈慧捷  陈璐  冯超逸", "关于",
@@ -293,13 +279,11 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			type.setEnabled(true);
 			Number.setEnabled(true);
 			recordItem.setEnabled(true);
-			// TODO
 		} else {
 			return;
 		}
 	}
 	
-	//TODO 自动匹配和错误判断
 	public void selectWord(){
 		cmb.setEditable(true);
 		   	//cmb.setPopupVisible(true);
@@ -406,11 +390,11 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         ArrayList<Character> list = word.alphaToChoose();
         System.out.println(list.size());
         
-        //TODO   //计时器，把print出来的东西放到label上
+        //TODO 计时器，把print出来的东西放到label上
         timer.init();
         Thread t = new Thread(timer);
         t.start();
-        //需要加入计时器的timerlabel和timertitle到Layout中，逻辑已经写好
+        //TODO 需要加入计时器的timerlabel和timertitle到Layout中，逻辑已经写好
         JLabel timerTitle, timerLabel;
         timerTitle = new JLabel("目前过去了：");
         timerLabel = new JLabel();
@@ -457,8 +441,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
                     .addComponent(ReturnButton)
                     .addContainerGap())
             );
-		//for (int tmp = startint; tmp < startint + duration; tmp++) {
-		//}
 	}
 
 	// 停止背单词，记录当前位置，进行保存
@@ -518,10 +500,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
         stats.setIcon(statsButton);
         stats.setDisabledIcon(statsButton);
         stats.setBorder(null);
-
-        //stats.setBorder(null);
-        //stats.setIcon(new ImageIcon("./images/data.png"));
-        //stats.setDisabledIcon(new ImageIcon("./images/data.png"));
 
         type.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
         type.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "重新开始", "上次结束单词开始", "选定单词开始" }));
@@ -629,17 +607,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
         );
-		// Create a scrolled text area.
-		//output = new JTextArea(5, 5);
-		//output.setEditable(false);
-		//output.setText("此处为TextArea");
-		//output.setBorder(javax.swing.border.LineBorder.createBlackLineBorder());
-		//scrollPane = new JScrollPane(output);
-		//scrollPane.add();
-		// Add the text area to the content pane.
-		//contentPane.add(scrollPane, BorderLayout.CENTER);
-
-		//return contentPane;
 	}
 
 	/** Returns an ImageIcon, or null if the path was invalid. */
@@ -676,8 +643,6 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 			}
 		});
 
-		// Create and set up the content pane.
-
 		// 主界面
 		MainView demo = new MainView();
 		demo.addlistener();
@@ -695,25 +660,19 @@ public class MainView extends JFrame implements KeyListener, ActionListener {
 		// Display the window.
 		frame.setSize(width, height);
 		frame.setVisible(true);
-		
 	}
 
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
 		if(e.getSource()==inputfield){
 			int caretPosition = inputfield.getCaretPosition();
 			String input=inputfield.getText();

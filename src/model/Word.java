@@ -10,6 +10,10 @@ public class Word {
 	String meaning;
 	String start;
 	
+	public Word(){
+		
+	}
+	
 	public int getID() {
 		return ID;
 	}
@@ -53,7 +57,8 @@ public class Word {
 		for (int i = 0; i < alphaNumber(); i++){
 			if (i<word.length){
 				ret.add(word[i]);
-			}else{
+			}
+			else{
 				int rand = (int)(Math.random()*26);
 				while (ret.contains(all[rand])){
 					rand = (int)(Math.random()*26);
@@ -63,10 +68,6 @@ public class Word {
 			}
 		}
 		return ret;
-	}
-	
-	public Word(){
-		
 	}
 	
 	//Constructor
