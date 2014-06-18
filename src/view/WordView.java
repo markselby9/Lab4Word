@@ -44,6 +44,8 @@ public class WordView extends javax.swing.JPanel {
         ReturnButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
+        clockLabel = new javax.swing.JLabel();
+        clockText = new javax.swing.JTextField();
 
         Chi.setFont(new java.awt.Font("微软雅黑", 0, 12));
         Chi.setText("中文释义");
@@ -99,6 +101,8 @@ public class WordView extends javax.swing.JPanel {
 
         jScrollPane1.setViewportView(jPanel1);
 
+        clockLabel.setText("已进行");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -120,11 +124,19 @@ public class WordView extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                         .addComponent(NOTOK, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(50, 50, 50))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(254, Short.MAX_VALUE)
+                .addComponent(clockLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(clockText, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(clockLabel)
+                    .addComponent(clockText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19)
                 .addComponent(ChiLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Chi, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -140,7 +152,7 @@ public class WordView extends javax.swing.JPanel {
                     .addComponent(NOTOK))
                 .addGap(18, 18, 18)
                 .addComponent(ReturnButton)
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
     }// </editor-fold>
 
@@ -169,6 +181,8 @@ public class WordView extends javax.swing.JPanel {
     private javax.swing.JButton NOTOK;
     private javax.swing.JButton OK;
     private javax.swing.JButton ReturnButton;
+    private javax.swing.JLabel clockLabel;
+    private javax.swing.JTextField clockText;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration
