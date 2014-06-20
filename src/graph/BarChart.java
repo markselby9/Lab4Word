@@ -40,7 +40,6 @@ public class BarChart {
 	                            );
 			
 		}else{
-			System.out.println("correct~~");
 			dataset = getDataSetByCorrect(lexiconList);
 	        chart = ChartFactory.createBarChart3D(
 	       		                 "全部词库中已背单词正确率", // 图表标题
@@ -99,11 +98,8 @@ public class BarChart {
 	    	   if(lexiconList.get(i).getAlreadyNum() == 0){
 	    		   correctRate = 0;
 	    	   }else{
-	    		   System.out.println(lexiconList.get(i).getAlreadyNum()-lexiconList.get(i).getWrongNum());
 		    	   correctRate = lexiconList.get(i).getAlreadyNum()-lexiconList.get(i).getWrongNum();
 		    	   correctRate = correctRate/lexiconList.get(i).getAlreadyNum();
-
-	    		   System.out.println(correctRate);
 	    	   }
 	           dataset.addValue(correctRate,
 	            		   lexiconList.get(i).getLexiconName(), lexiconList.get(i).getLexiconName());
